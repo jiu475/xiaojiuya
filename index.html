@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#dfe3e8"><title>API Hub V21.8 · 兼容性与备份修复版</title>
+<style>
+:root{color-scheme:light;--bg:#f3f5f8;--panel:#ffffff;--panel2:#f7f9fc;--line:#dce2ea;--text:#202938;--muted:#596579;--accent:#3268c8;--green:#18794e;--red:#b42336;--yellow:#8a5a00}
+body[data-theme="midnight"]{--bg:#0b1120;--panel:#121c2e;--panel2:#18253b;--line:#293952;--text:#edf3ff;--muted:#9caec8;--accent:#8ea3ff;--green:#62dfb3;--red:#ff8593;--yellow:#ffd27b}
+body[data-theme="ocean"]{--bg:#071b27;--panel:#0d2938;--panel2:#12394b;--line:#245064;--text:#e6fbff;--muted:#9cc6d1;--accent:#61d9d0;--green:#73e6b8;--red:#ff8c9a;--yellow:#ffda88}
+body[data-theme="lavender"]{--bg:#1a1428;--panel:#261d38;--panel2:#342748;--line:#4a385f;--text:#fbf0ff;--muted:#c3afd5;--accent:#d2a7ff;--green:#83e0bd;--red:#ff91b4;--yellow:#ffdc91}
+body[data-theme="pink"]{--bg:#fff1f6;--panel:#fff8fb;--panel2:#ffe5ef;--line:#f2bfd2;--text:#572b40;--muted:#986a7f;--accent:#d94f8b;--green:#23866b;--red:#c83c59;--yellow:#a96b13}
+body[data-theme="beige"]{--bg:#f5efe3;--panel:#fffaf0;--panel2:#eee2cc;--line:#d9c9ae;--text:#493d2c;--muted:#85745c;--accent:#ad8650;--green:#3d8062;--red:#b84f4f;--yellow:#a96b13}
+body{background-color:var(--bg);background-image:linear-gradient(135deg,#0004,#0002),var(--wallpaper,radial-gradient(ellipse at top,#182442 0,var(--bg) 60%));background-size:cover;background-position:center;background-attachment:fixed}
+.card,.stat,.api,aside,.mobilebar{backdrop-filter:blur(14px);background-color:color-mix(in srgb,var(--panel) 92%,transparent)}
+aside,.mobilebar{background-color:color-mix(in srgb,#0e1728 90%,transparent)}
+*{box-sizing:border-box}body{margin:0;color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}
+body[data-theme="midnight"],body[data-theme="ocean"],body[data-theme="lavender"]{color-scheme:dark}
+body[data-theme="pink"],body[data-theme="beige"]{color-scheme:light}
+body[data-theme="pink"]{--bg:#f3f5f8;--panel:#ffffff;--panel2:#f7f9fc;--text:#202938;--muted:#596579;--line:#dce2ea;--accent:#3268c8;--green:#18794e;--red:#b42336;--yellow:#8a5a00}
+body[data-theme="beige"]{--bg:#f3f5f8;--panel:#ffffff;--panel2:#f7f9fc;--text:#202938;--muted:#596579;--line:#dce2ea;--accent:#3268c8;--green:#18794e;--red:#b42336;--yellow:#8a5a00}
+input,textarea,select{background:var(--panel2);color:var(--text)}
+.navlabel{color:var(--muted)}.nav{color:var(--text)}.nav .num{color:var(--muted)}
+.endpoint,.tiny.muted{color:var(--muted)}.chip{background:var(--panel2);color:var(--text)}
+.api{background-color:color-mix(in srgb,var(--panel) 96%,transparent)}
+.notice,.status{background:var(--panel2);color:var(--text)}button{cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:10px;padding:9px 12px}button.primary{background:var(--accent);color:#10172b;border-color:transparent;font-weight:700}button.danger{color:var(--red)}button:disabled{opacity:.5;cursor:wait}input,textarea,select{width:100%;background:#0a1323;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;outline:none;min-width:0}input:focus,textarea:focus,select:focus{border-color:var(--accent)}textarea{min-height:78px;resize:vertical}
+.layout{min-height:100vh;display:grid;grid-template-columns:235px minmax(0,1fr)}aside{background:#0e1728;border-right:1px solid var(--line);padding:18px 12px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:10px;padding:5px 8px 20px;font-size:18px;font-weight:800}.brandicon{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#a6b2ff,#687af4);color:#0c1530;font-size:20px}.navlabel{color:#7185a4;font-size:11px;font-weight:700;letter-spacing:1px;padding:13px 10px 5px}.nav{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;color:#b9c7dd;padding:10px;border-radius:10px;margin:2px 0}.nav.active,.nav:hover{background:#202e49;color:white}.nav .num{margin-left:auto;color:#8094b4;font-size:12px}.sidebottom{border-top:1px solid var(--line);margin-top:18px;padding-top:12px}.main{padding:25px;max-width:1250px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.top h1{font-size:25px;margin:0}.muted{color:var(--muted)}.tiny{font-size:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px;margin-bottom:15px}.card h2{font-size:16px;margin:0 0 14px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px}.stat strong{font-size:25px;display:block}.stat span{color:var(--muted);font-size:12px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{max-width:100%}.grow{flex:1}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.full{grid-column:1/-1}label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}.formactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.toolbar{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:9px;margin-bottom:12px}.api{border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;background:#0e182a}.apitop{display:flex;justify-content:space-between;gap:12px}.apitop h3{margin:0;font-size:16px;overflow-wrap:anywhere}.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.chip{font-size:11px;border-radius:30px;background:#24324d;color:#c9d5ff;padding:3px 8px}.endpoint{font-size:12px;color:#9eb4d6;overflow-wrap:anywhere;margin-top:7px}.keyline{display:flex;gap:7px;margin-top:10px}.keyline input{font-family:ui-monospace,monospace;font-size:12px}.keyline button{flex-shrink:0}.empty{text-align:center;color:var(--muted);padding:32px 8px}.notice{padding:11px 12px;background:#0c1526;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:12px;margin-top:12px}.status{margin-top:10px;padding:10px;border-radius:9px;background:#0a1323;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.ok{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--yellow)}.hidden{display:none!important}.models{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.models button{font-size:12px;padding:6px 9px}.sectiontitle{display:flex;justify-content:space-between;align-items:center;gap:10px}.model-tools{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.model-tools summary{cursor:pointer;color:var(--muted);font-size:12px;padding:5px 0}
+.model-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:9px}
+.model-row{border:1px solid var(--line);border-radius:10px;padding:10px;background:rgba(127,145,170,.05);min-width:0}
+.model-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.model-name{font-size:12px;font-weight:700;overflow-wrap:anywhere}
+.model-state{font-size:11px;white-space:nowrap;border-radius:20px;padding:3px 7px;background:rgba(127,145,170,.12);color:var(--muted)}
+.model-state.good{color:var(--green)}.model-state.fail{color:var(--red)}.model-state.busy{color:var(--yellow)}
+.model-metrics{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:7px}
+.model-row button{font-size:11px;padding:6px 8px;margin-top:8px}
+.model-result{font-size:11px;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:7px;color:var(--muted)}
+@media(max-width:760px){.model-grid{grid-template-columns:1fr}}
+.global-searchbar{display:flex;gap:8px;margin-top:10px;max-width:620px}.global-searchbar input{background:var(--panel);color:var(--text);min-width:0}.global-searchbar button{flex:0 0 auto}.global-result{display:flex;align-items:flex-start;gap:12px;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:13px;margin:9px 0;background:var(--panel)}.global-result-main{min-width:0;flex:1}.global-result-title{font-weight:750;overflow-wrap:anywhere}.global-result-snippet{font-size:12px;color:var(--muted);overflow-wrap:anywhere;margin-top:4px;white-space:pre-wrap}.global-result-type{font-size:11px;color:var(--accent);font-weight:700}.global-result button{flex:0 0 auto}.global-results-group{margin-top:16px}.global-results-group h3{font-size:14px;margin:0 0 8px}.mobilebar{display:none}
+#lockScreen{max-width:480px;margin:9vh auto;padding:18px}
+@media(max-width:760px){.global-searchbar{max-width:none}.global-searchbar button{padding:9px 11px}.global-result{flex-direction:column}.global-result button{width:100%}.layout{display:block}.mobilebar{display:flex;position:sticky;top:0;z-index:10;background:#0e1728;border-bottom:1px solid var(--line);padding:10px;justify-content:space-between;align-items:center}.mobilebar button{padding:8px 10px}aside{position:fixed;z-index:20;left:0;top:0;width:260px;transform:translateX(-105%);transition:transform .2s;box-shadow:15px 0 40px #0007}aside.open{transform:translateX(0)}.main{padding:15px 12px}.top h1{font-size:21px}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:21px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{grid-template-columns:1fr}.api{padding:12px}.apitop{align-items:flex-start}.keyline{flex-wrap:wrap}.keyline input{flex:1;min-width:130px}}
+
+.auth-box form{display:grid;gap:9px;margin-top:18px}.auth-box label{color:var(--text);font-weight:650;margin-top:5px}.auth-box input{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--line);border-radius:10px}
+.auth-box button{width:100%;padding:12px;border-radius:10px;margin-top:8px;cursor:pointer}.auth-toggle{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.auth-error{color:var(--red);font-size:13px;min-height:18px}.auth-foot{line-height:1.6;margin-bottom:0}
+
+
+/* Accessibility: strong contrast, especially on light themes and mobile screens */
+body[data-theme="pink"],body[data-theme="beige"]{color-scheme:light}
+body[data-theme="pink"] input,body[data-theme="pink"] textarea,body[data-theme="pink"] select,
+body[data-theme="beige"] input,body[data-theme="beige"] textarea,body[data-theme="beige"] select{
+  background:var(--panel2)!important;color:var(--text)!important;border:1px solid var(--line)!important;
+}
+body[data-theme="pink"] input::placeholder,body[data-theme="pink"] textarea::placeholder,
+body[data-theme="beige"] input::placeholder,body[data-theme="beige"] textarea::placeholder{color:var(--muted)!important;opacity:1}
+body[data-theme="pink"] .muted,body[data-theme="pink"] .tiny,body[data-theme="pink"] .endpoint,
+body[data-theme="beige"] .muted,body[data-theme="beige"] .tiny,body[data-theme="beige"] .endpoint{color:var(--muted)}
+body[data-theme="pink"] .card,body[data-theme="pink"] .stat,body[data-theme="pink"] .api,
+body[data-theme="beige"] .card,body[data-theme="beige"] .stat,body[data-theme="beige"] .api{
+  background-color:var(--panel)!important;backdrop-filter:none;
+}
+body[data-theme="pink"] aside,body[data-theme="pink"] .mobilebar,
+body[data-theme="beige"] aside,body[data-theme="beige"] .mobilebar{background-color:var(--panel)!important}
+button,input,textarea,select{font-size:max(15px,1em)}
+@media(max-width:600px){
+  body{font-size:16px;line-height:1.6}
+  .muted,.tiny,.endpoint,.navlabel{font-size:14px;line-height:1.55}
+  label{font-size:15px}
+  button,.nav{min-height:44px}
+}
+
+/* API Hub Professional Refresh */
+:root{color-scheme:light;--bg:#f3f5f8;--panel:#fff;--panel2:#f7f9fc;--line:#dce2ea;--text:#202938;--muted:#596579;--accent:#3268c8;--green:#18794e;--red:#b42336;--yellow:#8a5a00}
+body{background-color:var(--bg);background-image:var(--wallpaper,none);background-size:cover;background-attachment:fixed;color:var(--text);font-size:15px;line-height:1.55}
+.card,.stat,.api,aside,.mobilebar{background:var(--panel)!important;backdrop-filter:none!important;box-shadow:0 2px 8px #172b4d0a;border-color:var(--line)}
+h1,h2,h3,.page-title{color:var(--text)}
+.muted,.tiny,.endpoint,.navlabel{color:var(--muted)}
+input,textarea,select{background:var(--panel2)!important;color:var(--text)!important;border:1px solid var(--line)!important}
+input::placeholder,textarea::placeholder{color:var(--muted)!important;opacity:1}
+button{color:var(--text);border:1px solid var(--line);background:var(--panel)}
+button:hover{border-color:var(--accent);background:var(--panel2)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #3268c833;outline-offset:2px}
+.api-pro{padding:16px;border:1px solid #dce2ea;border-radius:16px;box-shadow:0 3px 12px #15294b0a;margin-bottom:12px;min-width:0}
+.api-pro-head{display:flex;align-items:center;gap:12px;min-width:0}.api-head-actions{display:flex;gap:6px;align-items:center;flex:0 0 auto}.collapse-quick{min-height:36px;padding:6px 10px;color:var(--muted);font-size:12px}.api-pro-body{display:block}.api-pro.is-collapsed .api-pro-body{display:none}.api-pro.is-collapsed{padding-top:12px;padding-bottom:12px}.api-pro.is-collapsed .api-pro-head{min-height:42px}.api-pro.is-collapsed .provider-info h3{margin:0}.api-pro.is-collapsed .provider-meta{display:none}
+.provider-mark{width:44px;height:44px;flex:0 0 44px;border-radius:13px;display:grid;place-items:center;background:var(--panel2);color:var(--accent);font-size:22px;font-weight:750}
+.provider-info{flex:1;min-width:0}.provider-info h3{font-size:17px;line-height:1.3;margin:0 0 6px;overflow-wrap:anywhere}
+.provider-meta{display:flex;gap:5px;flex-wrap:wrap}.provider-meta .chip{font-size:11px;padding:2px 7px}
+.edit-quick{flex:0 0 auto;min-height:36px;padding:6px 12px;color:#2459ad;border-color:#c8d7f3;background:#f5f8ff}
+.api-summary{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:13px 0;padding:9px 10px;border-radius:9px;background:var(--panel2);color:var(--text);font-size:13px}
+.api-state{display:inline-flex;align-items:center;gap:6px;font-weight:650}.api-state i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#7c8798}
+.state-ok{color:#18794e}.state-ok i{background:#219764}.state-bad{color:#b42336}.state-bad i{background:#d92d20}.meta-dot{color:#a0a9b8}.key-state{overflow-wrap:anywhere}
+.api-detail{position:relative;padding:10px 0;border-bottom:1px solid var(--line);min-width:0}.detail-label{font-size:11px;font-weight:750;letter-spacing:.07em;color:var(--muted);margin-bottom:5px}
+.endpoint-pro{font-size:13px;line-height:1.5;overflow-wrap:anywhere;word-break:break-word;padding-right:2px}
+.icon-action{font-size:12px;min-height:32px;padding:4px 9px;margin-top:7px;color:var(--accent);background:var(--panel2);border-color:var(--line)}
+.key-display{display:flex;align-items:center;gap:8px;min-width:0}.key-display input{min-width:0;flex:1;width:100%;height:38px;border-radius:8px;font-family:ui-monospace,monospace;font-size:13px}
+.api-actions{display:grid;grid-template-columns:1.2fr 1fr 0.7fr 0.7fr;gap:7px;margin-top:13px}
+.api-actions button{min-width:0;padding:8px 5px;font-size:12px;line-height:1.3;min-height:38px}
+.api-actions .primary-action{background:#3268c8;color:#fff;border-color:#3268c8}.api-actions .primary-action:hover{background:#2859ad}
+.api-actions .danger{color:#b42336;background:#fff;border-color:#f0c6cb}
+.api-extra{margin-top:10px;overflow-wrap:anywhere}
+.status{overflow-wrap:anywhere}
+@media(max-width:600px){
+ .api-pro{padding:13px;border-radius:14px}
+ .provider-mark{width:40px;height:40px;flex-basis:40px}
+ .provider-info h3{font-size:16px}
+ .api-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .api-actions button{font-size:13px;min-height:42px}
+ .api-summary{font-size:13px}
+ .endpoint-pro{font-size:13px}
+}
+
+.api-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+.api-actions button{overflow-wrap:anywhere}
+@media(max-width:600px){.api-actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.fab-wrap{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.fab{width:58px;height:58px;border-radius:50%;font-size:32px;line-height:1;background:var(--accent);color:#fff;border:0;box-shadow:0 8px 26px #10203d40;display:grid;place-items:center;padding:0}
+.fab-menu{display:flex;flex-direction:column;gap:7px;padding:10px;background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:0 8px 30px #10203d30;min-width:205px}
+.fab-menu button{width:100%;text-align:left;min-height:42px}.fab-menu button span{float:right;color:var(--muted)}
+.fold-data{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2)}.fold-data>summary{cursor:pointer;font-weight:650;list-style:none}.fold-data>summary::-webkit-details-marker{display:none}.fold-data[open]>summary{margin-bottom:8px}.bookmark-card{padding:0!important;overflow:hidden}.bookmark-summary{display:flex;align-items:center;gap:10px;list-style:none;padding:14px;cursor:pointer;min-width:0}.bookmark-summary::-webkit-details-marker{display:none}.bookmark-summary:after{content:'＋';margin-left:auto;color:var(--muted);font-size:18px;flex:0 0 auto}.bookmark-card[open] .bookmark-summary:after{content:'−'}.bookmark-summary-title{font-weight:700;min-width:0;overflow-wrap:anywhere}.bookmark-summary-url{font-size:12px;color:var(--muted);overflow-wrap:anywhere;min-width:0}.bookmark-quick-actions{display:flex;gap:6px;align-items:center;flex:0 0 auto}.bookmark-quick-actions button{padding:6px 8px;font-size:12px;min-height:32px}.bookmark-summary:after{content:"＋";margin-left:0;color:var(--muted);font-size:18px;flex:0 0 auto}.bookmark-card[open] .bookmark-summary:after{content:"−"}@media(max-width:520px){.bookmark-summary{flex-wrap:wrap;padding:12px}.bookmark-summary-title{flex:1 1 45%}.bookmark-quick-actions{order:3;width:100%}.bookmark-quick-actions button{flex:1}}.bookmark-content{padding:0 14px 14px;border-top:1px solid var(--line)}
+/* 收藏小剧场 */
+.theater-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}.theater-tile{border:1px solid var(--line);background:var(--panel);border-radius:14px;overflow:hidden;min-width:0;display:flex;flex-direction:column}.theater-tile summary{list-style:none;cursor:pointer;padding:10px 11px;font-weight:700;overflow-wrap:anywhere}.theater-tile summary::-webkit-details-marker{display:none}.theater-tile[open] summary{border-bottom:1px solid var(--line)}.theater-tile-body{padding:10px;min-width:0}.theater-text{white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;font-size:13px;line-height:1.55}.theater-preview{width:100%;height:190px;border:1px solid var(--line);border-radius:8px;background:#fff;display:block}.theater-link{display:block;overflow-wrap:anywhere;font-size:11px;color:var(--accent);padding:0 10px 8px}.theater-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:0 9px 9px;margin-top:auto}.theater-actions button{font-size:11px;padding:6px 3px;min-height:32px}.theater-tile .theater-kind{font-size:10px;color:var(--muted);font-weight:500;padding:0 10px 7px}.theater-zoom{display:block;width:calc(100% - 18px);margin:0 9px 8px}.theater-stage{position:fixed;inset:0;z-index:2000;background:#101522f5;display:none;flex-direction:column;padding:10px;gap:10px}.theater-stage.active{display:flex}.theater-stage-bar{display:flex;align-items:center;gap:10px;color:#fff;min-height:44px}.theater-stage-title{font-weight:700;overflow-wrap:anywhere;flex:1}.theater-stage iframe{width:100%;height:calc(100dvh - 74px);border:0;border-radius:10px;background:#fff;flex:1;min-height:0}.theater-stage button{background:#fff;color:#182033;border:0;border-radius:9px;padding:9px 13px;font-weight:600}.theater-stage .stage-copy{background:var(--accent);color:white}@media(max-width:900px){.theater-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:600px){.theater-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.theater-preview{height:150px}.theater-tile summary{padding:9px;font-size:13px}.theater-actions button{font-size:11px}}@media(max-width:360px){.theater-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.fab{width:54px;height:54px}.fab-wrap{right:14px;bottom:max(14px,env(safe-area-inset-bottom))}.fab-menu{min-width:195px}}
+
+.role-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}.role-card{border:1px solid var(--line);background:var(--panel);border-radius:14px;overflow:hidden;min-width:0}.role-card summary{padding:11px;cursor:pointer;font-weight:700;overflow-wrap:anywhere}.role-card-body{padding:10px;border-top:1px solid var(--line)}.role-cover{width:100%;max-height:180px;object-fit:cover;border-radius:9px;margin-bottom:8px}.role-raw{white-space:pre-wrap;overflow-wrap:anywhere;max-height:280px;overflow:auto;font:12px/1.5 ui-monospace,monospace;background:var(--bg);padding:9px;border-radius:8px}.role-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:9px}.role-actions button{font-size:12px;padding:7px 4px}.role-meta{font-size:11px;color:var(--muted);padding:0 11px 9px;overflow-wrap:anywhere}@media(max-width:900px){.role-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:600px){.role-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.role-card summary{font-size:13px;padding:9px}.role-actions button{font-size:11px}}@media(max-width:360px){.role-grid{grid-template-columns:1fr}}
+
+.library-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px;align-items:start;grid-auto-rows:min-content}.library-card{border:1px solid var(--line);background:var(--panel);border-radius:14px;overflow:hidden;min-width:0;align-self:start;height:fit-content}.library-card summary{padding:11px;cursor:pointer;font-weight:700;overflow-wrap:anywhere}.library-body{padding:10px;border-top:1px solid var(--line)}.library-content{white-space:pre-wrap;overflow-wrap:anywhere;max-height:280px;overflow:auto;font-size:13px;line-height:1.55;background:var(--bg);border-radius:8px;padding:10px}.library-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:9px}.library-actions button{font-size:12px;padding:7px 4px}.library-meta{font-size:11px;color:var(--muted);padding:0 11px 9px;overflow-wrap:anywhere}@media(max-width:900px){.library-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:600px){.library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.library-card summary{font-size:13px;padding:9px}.library-actions button{font-size:11px}}@media(max-width:360px){.library-grid{grid-template-columns:1fr}}
+
+/* V18.1 · Instagram-inspired visual refresh: soft canvas, rounded surfaces, gradient accents */
+:root{--bg:#f7f7fb;--panel:#ffffff;--panel2:#f4f4f8;--line:#e8e5ee;--text:#262238;--muted:#777286;--accent:#c13584;--green:#198754;--red:#c93550;--yellow:#a56a08;--ins-gradient:linear-gradient(115deg,#feda75 0%,#fa7e1e 24%,#d62976 57%,#962fbf 78%,#4f5bd5 100%);--ins-shadow:0 8px 24px rgba(76,42,100,.08)}
+body{background:radial-gradient(ellipse at 10% 0%,rgba(214,41,118,.07),transparent 32%),radial-gradient(ellipse at 100% 10%,rgba(79,91,213,.07),transparent 30%),var(--bg);background-attachment:fixed;color:var(--text)}
+body[data-theme="midnight"]{--bg:#11101a;--panel:#1b1926;--panel2:#242130;--line:#393344;--text:#f8f5ff;--muted:#b0a9bf;--accent:#e36aad;--ins-shadow:0 8px 24px rgba(0,0,0,.2)}
+body[data-theme="ocean"]{--bg:#eff8fa;--panel:#fff;--panel2:#f2fafb;--line:#d7e9ec;--text:#18323a;--muted:#5e7c83;--accent:#d62976}
+body[data-theme="lavender"]{--bg:#f5f0fb;--panel:#fffaff;--panel2:#f2eafa;--line:#e5d8f0;--text:#32243e;--muted:#806c8d;--accent:#a13bc0}
+body[data-theme="pink"]{--bg:#fff5fa;--panel:#fff;--panel2:#fff0f7;--line:#f4dce9;--text:#44273a;--muted:#89667b;--accent:#d62976}
+body[data-theme="beige"]{--bg:#faf6ef;--panel:#fffdf9;--panel2:#f4ede2;--line:#e9ddcb;--text:#44372c;--muted:#867461;--accent:#b05b88}
+.card,.stat,.api,aside,.mobilebar{backdrop-filter:blur(18px);box-shadow:var(--ins-shadow)}
+aside,.mobilebar{background:color-mix(in srgb,var(--panel) 94%,transparent);border-color:var(--line)}
+aside{border-right:1px solid var(--line)}
+.brand{padding:8px 9px 22px;letter-spacing:-.025em}
+.brandicon{background:var(--ins-gradient);color:#fff;border-radius:15px;box-shadow:0 5px 14px rgba(198,46,126,.23)}
+.navlabel{color:var(--muted);font-size:10px;letter-spacing:1.25px}
+.nav{color:var(--muted);border:1px solid transparent;border-radius:14px;padding:11px 12px;transition:background .18s ease,color .18s ease,transform .18s ease}
+.nav.active{background:linear-gradient(100deg,rgba(214,41,118,.12),rgba(150,47,191,.08));color:var(--accent);font-weight:750;border-color:color-mix(in srgb,var(--accent) 13%,transparent)}
+.nav:hover{background:var(--panel2);color:var(--text);transform:translateX(2px)}
+.nav .num{background:var(--panel2);border-radius:999px;padding:2px 7px;color:var(--muted)}
+.main{padding:clamp(14px,2.5vw,30px);max-width:1320px}
+.top{padding:4px 0 16px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.top h1{font-size:clamp(23px,3vw,30px);letter-spacing:-.04em;font-weight:800}
+.card{border:1px solid var(--line);border-radius:22px;padding:clamp(14px,2vw,20px);box-shadow:var(--ins-shadow)}
+.card h2{letter-spacing:-.02em;font-size:16px}
+.stat{border:1px solid var(--line);border-radius:20px;padding:17px;background:var(--panel)}
+.stat strong{letter-spacing:-.04em;font-size:clamp(23px,3vw,29px)}
+.api,.api-pro{border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:var(--ins-shadow)}
+button{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:9px 15px;font-weight:650;transition:transform .16s ease,box-shadow .16s ease,filter .16s ease,border-color .16s ease;box-shadow:0 1px 2px rgba(30,20,50,.03)}
+button:hover{filter:brightness(.99);border-color:color-mix(in srgb,var(--accent) 35%,var(--line));box-shadow:0 4px 13px rgba(75,40,90,.08);transform:translateY(-1px)}
+button:active{transform:translateY(0) scale(.98)}
+button.primary,.api-actions .primary-action,.auth-box button:not(.auth-toggle){background:var(--ins-gradient);color:#fff;border-color:transparent;font-weight:750;box-shadow:0 5px 14px rgba(198,46,126,.18)}
+button.primary:hover,.api-actions .primary-action:hover{filter:saturate(1.08) brightness(1.03);box-shadow:0 7px 18px rgba(198,46,126,.24)}
+button.danger,.api-actions .danger{color:var(--red);background:color-mix(in srgb,var(--red) 7%,var(--panel));border-color:color-mix(in srgb,var(--red) 22%,var(--line))}
+input,textarea,select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:12px 13px;box-shadow:inset 0 1px 2px rgba(25,15,40,.025)}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent);outline:none}
+input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 78%,transparent)}
+.global-searchbar input{border-radius:999px;padding-left:16px}.global-searchbar button{padding-inline:19px}
+.chip{background:color-mix(in srgb,var(--accent) 9%,var(--panel2));color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 12%,var(--line));border-radius:999px;padding:4px 9px}
+.notice,.status{border-radius:15px;background:var(--panel2);border:1px solid var(--line)}
+.api-summary{border-radius:14px;background:var(--panel2)}
+.provider-mark{border-radius:16px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,var(--panel)),var(--panel2));color:var(--accent)}
+.edit-quick{background:color-mix(in srgb,var(--accent) 7%,var(--panel));color:var(--accent);border-color:color-mix(in srgb,var(--accent) 22%,var(--line))}
+.icon-action,.collapse-quick{border-radius:999px}
+.key-display input{border-radius:12px}
+.fold-data,.bookmark-card,.theater-tile,.role-card,.library-card,.global-result,.model-row{border-radius:17px;border-color:var(--line);box-shadow:0 4px 15px rgba(60,35,80,.035)}
+.bookmark-summary{padding:15px}.bookmark-content,.role-card-body,.library-body{background:color-mix(in srgb,var(--panel) 97%,var(--accent))}
+.fab{background:var(--ins-gradient);color:#fff;box-shadow:0 9px 28px rgba(198,46,126,.3);border:0;width:60px;height:60px}
+.fab-menu{border-radius:20px;box-shadow:0 15px 40px rgba(40,20,60,.16);border-color:var(--line)}
+.fab-menu button{border-radius:13px}
+.theater-preview{border-radius:12px}.theater-stage button{border-radius:999px}
+.role-cover{border-radius:14px}
+.fold-data>summary,.bookmark-summary,.theater-tile summary,.role-card summary,.library-card summary{transition:background .15s ease}
+.fold-data>summary:hover,.bookmark-summary:hover,.theater-tile summary:hover,.role-card summary:hover,.library-card summary:hover{color:var(--accent)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+@media(max-width:760px){.mobilebar{padding:11px 13px}.main{padding:15px 12px 90px}.top{align-items:flex-start}.top h1{font-size:24px}.card{border-radius:19px}.stats{gap:9px}.stat{border-radius:17px}.nav:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+
+
+
+/* V18.2 monochrome true-frosted-glass refinement */
+:root{color-scheme:light;--bg:#dfe3e8;--panel:rgba(255,255,255,.48);--panel2:rgba(247,249,251,.56);--line:rgba(255,255,255,.78);--text:#17191d;--muted:#555d68;--accent:#24272c;--green:#287451;--red:#a33b42;--yellow:#80652d}
+body{background-color:#d9dee4;background-image:var(--wallpaper,radial-gradient(ellipse at 18% 12%,rgba(255,255,255,.96),transparent 38%),radial-gradient(ellipse at 82% 22%,rgba(190,199,210,.8),transparent 42%),linear-gradient(145deg,#d9dfe6,#eef0f2 48%,#cbd2da));background-size:cover;background-position:center;background-attachment:fixed;color:var(--text)}
+.card,.stat,.api,aside,.mobilebar,.api-pro,.global-result,.notice,.status{background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(236,240,245,.34))!important;backdrop-filter:blur(24px) saturate(125%)!important;-webkit-backdrop-filter:blur(24px) saturate(125%)!important;border:1px solid rgba(255,255,255,.78)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.88),inset 0 -1px 0 rgba(110,122,138,.10),0 8px 24px rgba(35,43,55,.075)!important}
+.card,.stat,.api,.api-pro{border-radius:22px!important;position:relative;overflow:hidden}
+.card::before,.stat::before,.api::before,.api-pro::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(122deg,rgba(255,255,255,.28),transparent 34%,rgba(255,255,255,.09) 68%,transparent);opacity:.8}
+.card>*,.stat>*,.api>*,.api-pro>*{position:relative;z-index:1}
+aside,.mobilebar{background:linear-gradient(155deg,rgba(247,249,252,.66),rgba(218,224,232,.42))!important}
+.nav{color:#30343a;border-radius:13px;padding:8px 10px;min-height:38px}.nav.active,.nav:hover{background:rgba(255,255,255,.62);color:#111;border:1px solid rgba(255,255,255,.78);box-shadow:inset 0 1px 0 #ffffffc9,0 3px 10px #2029360a}
+button{font-size:13px!important;min-height:32px!important;padding:6px 10px!important;border-radius:12px!important;border:1px solid rgba(255,255,255,.9)!important;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(224,229,235,.54))!important;color:#202329!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 3px 9px rgba(25,32,42,.07)!important;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+button:hover{background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(232,236,241,.72))!important;box-shadow:inset 0 1px 0 #fff,0 5px 12px rgba(25,32,42,.10)!important;transform:translateY(-1px)}
+button:active{transform:translateY(0) scale(.985);box-shadow:inset 0 1px 3px rgba(20,25,32,.1)!important}
+button.primary,.api-actions .primary-action{background:linear-gradient(145deg,#34383e,#17191d)!important;color:#fff!important;border-color:rgba(255,255,255,.62)!important}
+button.danger,.api-actions .danger{color:#8f3038!important;background:rgba(255,255,255,.52)!important;border-color:rgba(255,255,255,.85)!important}
+input,textarea,select{background:rgba(255,255,255,.56)!important;color:#17191d!important;border:1px solid rgba(255,255,255,.88)!important;border-radius:13px!important;box-shadow:inset 0 1px 3px rgba(50,58,68,.045),0 1px 0 rgba(255,255,255,.55)}
+input::placeholder,textarea::placeholder{color:#68717d!important}input:focus,textarea:focus,select:focus{border-color:rgba(80,90,103,.55)!important;box-shadow:0 0 0 3px rgba(70,78,89,.10)!important}
+.chip,.provider-mark{background:rgba(255,255,255,.56)!important;color:#30353c!important;border:1px solid rgba(255,255,255,.7)}
+.api-summary{background:rgba(255,255,255,.38)!important;border:1px solid rgba(255,255,255,.55);border-radius:14px}
+.api-actions button,.icon-action,.collapse-quick,.edit-quick{font-size:12px!important;min-height:31px!important;padding:5px 8px!important}
+.global-searchbar button{min-height:34px!important}
+@media(max-width:600px){button{min-height:38px!important;padding:7px 10px!important}.nav{min-height:40px!important}.api-actions button{min-height:38px!important}.card,.stat,.api,.api-pro{border-radius:18px!important}.main{padding:14px 11px}}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+
+
+.assistant-chat{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;padding:10px;border:1px solid var(--line);border-radius:14px;background:rgba(120,130,145,.04)}
+.assistant-msg{max-width:95%;padding:12px 14px;border-radius:14px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.6}
+.assistant-msg.user{align-self:flex-end;background:rgba(130,140,155,.17);border:1px solid var(--line)}.assistant-msg.assistant{align-self:flex-start;background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 5px 16px rgba(20,25,35,.05)}
+.assistant-reason{margin-top:12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(130,140,155,.07)}.assistant-reason summary{cursor:pointer;font-size:12px;font-weight:700}.assistant-reason div{padding-top:8px;white-space:pre-wrap;line-height:1.6}
+@media(max-width:600px){.assistant-chat{max-height:48vh}.assistant-msg{max-width:100%}}
+
+
+/* V18.5: monochrome frosted chat + separate tavern collections */
+.assistant-chat{display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:18px;background:linear-gradient(145deg,#eef0f3cc,#dfe3e9aa);border:1px solid #ffffffc9;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);min-height:240px;max-height:56vh;overflow:auto}
+.assistant-msg{max-width:min(84%,620px);padding:11px 14px;border-radius:16px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;box-shadow:0 3px 10px #2633430d;position:relative}
+.assistant-msg.assistant{align-self:flex-start;background:#ffffffdf;border:1px solid #ffffff;color:#20242a;border-top-left-radius:5px}
+.assistant-msg.user{align-self:flex-end;background:#24272d;color:#fff;border:1px solid #4a4e55;border-top-right-radius:5px}
+.module-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.module-tabs button{font-size:12px;min-height:34px;padding:7px 11px;border-radius:999px;background:#ffffffb8;border-color:#fff;color:#34373d}.module-tabs button.active{background:#24272d;color:white;border-color:#24272d}
+.nav-sub{padding-left:28px!important;font-size:12px!important;opacity:.9}
+.css-preview-note{font-size:11px;color:var(--muted)}
+
+.library-head{padding:14px!important;margin-bottom:10px!important}.library-head .sectiontitle{margin-bottom:10px}.library-head .module-tabs{display:flex;gap:6px;flex-wrap:wrap}.library-head .module-tabs button{min-height:34px;padding:7px 11px;font-size:12px;border-radius:10px}.library-search-wrap{position:sticky;top:6px;z-index:8;margin:0 0 12px;padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(18px)}.library-search-wrap input{width:100%;min-height:42px;margin:0;padding:10px 13px;font-size:14px}.library-results{min-height:120px}.library-results .empty{padding:28px 12px;text-align:center}.library-card{border-radius:13px!important}.library-grid{gap:8px!important;align-items:start;grid-auto-rows:min-content}.library-card{align-self:start;height:fit-content}
+
+/* V18.8: clean single-directory view */
+body.library-mode .global-searchbar{display:none!important}
+body.library-mode #pageSub{display:none!important}
+body.library-mode #quickAdd{display:none!important}
+body.library-mode .library-head>.sectiontitle,body.library-mode .library-head>.module-tabs{display:none!important}
+body.library-mode .library-head{padding:0!important;margin:0 0 10px!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important}
+body.library-mode #libraryAddPanel{display:none!important}
+body.library-mode #libraryAddPanel[open]{display:block!important}
+body.library-mode .top .global-searchbar,body.library-mode #quickAdd,body.library-mode .library-head{display:none!important}
+body.library-mode .library-search-wrap{position:sticky;top:6px;z-index:8;margin:0 0 12px;padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(18px)}
+body.library-mode .library-search-wrap input{width:100%;min-height:42px;margin:0;padding:10px 13px;font-size:14px}
+
+
+/* V19.1：右下角加号直接打开当前目录专属弹窗 */
+.add-modal{position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}.add-modal.hidden{display:none!important}.add-modal-backdrop{position:absolute;inset:0;background:rgba(12,16,24,.48);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}.add-modal-dialog{position:relative;width:min(680px,100%);max-height:90dvh;overflow:auto;border:1px solid rgba(255,255,255,.85);border-radius:22px;background:rgba(245,247,250,.97);box-shadow:0 24px 80px rgba(0,0,0,.28);padding:14px;color:#252832}.add-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 2px 12px;border-bottom:1px solid rgba(90,100,115,.18);margin-bottom:10px}.add-modal-head strong{font-size:18px}.add-modal-head button{width:36px;height:36px;min-height:36px;border-radius:50%;font-size:24px;padding:0}.add-modal-dialog #bookmarkAddPanel,.add-modal-dialog #roleAddPanel,.add-modal-dialog #libraryAddPanel,.add-modal-dialog #theaterAddPanel{display:block!important;margin:0!important;padding:4px!important;border:0!important;box-shadow:none!important;background:transparent!important}.add-modal-dialog #bookmarkAddPanel>summary,.add-modal-dialog #roleAddPanel>summary,.add-modal-dialog #libraryAddPanel>summary,.add-modal-dialog #theaterAddPanel>summary{display:none!important}.add-modal-dialog #libraryAddPanel{display:block!important}.add-modal-dialog #libraryTypeLock{display:block!important}.add-modal-dialog form{margin-top:0!important}.add-modal-dialog input,.add-modal-dialog select,.add-modal-dialog textarea{max-width:100%;box-sizing:border-box}@media(max-width:600px){.add-modal{padding:8px;align-items:flex-end}.add-modal-dialog{max-height:88dvh;border-radius:20px 20px 12px 12px;padding:12px}.add-modal-head strong{font-size:16px}}
+
+
+/* 角色卡收藏馆使用自己的页面工具栏，不显示 API 专用的全局搜索与添加 API 按钮 */
+body.roles-mode .global-searchbar, body.roles-mode #quickAdd { display: none !important; }
+
+/* V20.6：角色卡页面顶部说明/添加区与筛选器统一为普通磨砂控件风格；只调整外观，不隐藏功能 */
+body.roles-mode #view-roles > .card:first-child{background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;padding:0!important;margin:0 0 14px!important;border-radius:0!important}
+body.roles-mode #view-roles > .card:first-child > .sectiontitle{padding:0 2px 8px!important;margin:0 0 8px!important;border-bottom:1px solid var(--line)}
+body.roles-mode #view-roles > .card:first-child > p{margin:8px 2px 12px!important;line-height:1.55}
+body.roles-mode #roleAddPanel{margin:8px 0 0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+body.roles-mode #roleAddPanel>summary{display:block!important;padding:12px 14px!important;border:1px solid rgba(255,255,255,.82)!important;border-radius:14px!important;background:rgba(255,255,255,.48)!important;box-shadow:0 3px 12px rgba(25,35,50,.045)!important;color:var(--text)!important}
+body.roles-mode #roleAddPanel[open]{padding:0!important}
+body.roles-mode #roleAddPanel form{padding:12px!important;margin-top:8px!important;border:1px solid rgba(255,255,255,.75);border-radius:14px;background:rgba(255,255,255,.32)}
+body.roles-mode #view-roles > .card:last-child{padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+body.roles-mode #view-roles > .card:last-child .toolbar{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+body.roles-mode #roleCategoryFilter{background:rgba(255,255,255,.56)!important;color:var(--text)!important;border:1px solid rgba(255,255,255,.88)!important;box-shadow:inset 0 1px 3px rgba(50,58,68,.045),0 1px 0 rgba(255,255,255,.55)!important;border-radius:13px!important}
+
+/* V20.7: full-screen mobile conversation layout */
+
+.assistant-composer-wrap{flex:0 0 auto;padding:5px 12px max(5px,env(safe-area-inset-bottom));background:rgba(247,248,248,.88);border-top:1px solid rgba(255,255,255,.9)}
+.assistant-composer{display:flex;align-items:center;gap:7px;padding:4px 7px;border-radius:18px;background:#fff;border:1px solid #e7e8ea;box-shadow:0 3px 12px rgba(30,35,40,.05);min-height:44px}
+.assistant-composer-icon,.assistant-send-btn{width:34px;min-width:34px;height:34px!important;min-height:34px!important;border-radius:13px!important;padding:0!important;font-size:20px!important;box-shadow:none!important}
+.assistant-composer textarea{flex:1;min-width:0;resize:none;border:0!important;box-shadow:none!important;background:transparent!important;border-radius:0!important;padding:6px 2px!important;margin:0;height:34px;min-height:34px!important;max-height:78px;font-size:14px!important;line-height:1.35}
+.assistant-send-btn{background:#292c31!important;color:white!important;border-color:#292c31!important;font-weight:800}.assistant-composer-icon{background:#f1f2f3!important;border:1px solid #e5e6e8!important;color:#292c31!important}
+.assistant-footnote{text-align:center;color:#858990;font-size:10px;padding-top:7px}
+.assistant-more{position:absolute;bottom:96px;left:14px;right:14px;z-index:4;max-height:45vh;overflow:auto;background:#ffffffed;border:1px solid white;border-radius:16px;box-shadow:0 8px 30px #2222}
+.assistant-more:not([open]){display:none}
+.assistant-more .assistant-reason{margin:0 12px 10px}
+.assistant-more>button{margin:0 12px 10px}
+.assistant-more .notice{margin:0 12px 12px;font-size:11px}
+@media(min-width:700px){body.assistant-mode #view-assistant{left:260px}.assistant-shell{max-width:900px;margin:0 auto;border-left:1px solid #fff;border-right:1px solid #fff}.assistant-chat{padding-left:clamp(22px,5vw,70px);padding-right:clamp(22px,5vw,70px)}}
+@media(max-width:520px){.assistant-topbar{height:62px;flex-basis:62px}.assistant-chat{padding:16px 12px 20px;gap:12px}.assistant-msg{max-width:88%;font-size:14px}.assistant-settings-grid{grid-template-columns:1fr}.assistant-settings{margin:8px 10px 0}.assistant-composer-wrap{padding-left:10px;padding-right:10px}}
+body:not(.assistant-mode) .assistant-chat,body:not(.assistant-mode) .assistant-composer-wrap,body:not(.assistant-mode) .assistant-settings{display:none!important}
+
+/* Story snippet stationery themes */
+#storyTemplateWrap{display:none}#storyTemplateWrap select{width:100%}
+.library-story-paper{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;margin:12px 0 14px;border-radius:18px;line-height:1.8;font-size:15px;min-height:100px;box-shadow:0 8px 22px rgba(60,45,55,.06);position:relative;}
+.library-story-paper:before{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.story-theme-postcard{background:linear-gradient(135deg,#fffaf0,#f7eadb);border:1px solid #e7cdb5;color:#654b3d;border-radius:5px 18px 5px 18px;padding:22px 18px 18px 24px}.story-theme-postcard:before{content:'POSTCARD  ·  A LITTLE MEMORY'}
+.story-theme-letter{background:repeating-linear-gradient(to bottom,#fffdf8 0,#fffdf8 31px,#e7e0d6 32px);border:1px solid #e7ded2;color:#55463e;padding:22px 18px 18px 25px;border-radius:6px 20px 20px 6px}.story-theme-letter:before{content:'A LETTER FOR YOU'}
+.story-theme-dialogue{background:linear-gradient(145deg,#f7f6ff,#eeedfa);border:1px solid #dcd8f1;color:#39364e;border-radius:20px 20px 20px 5px}.story-theme-dialogue:before{content:'SCENE  ·  DIALOGUE'}
+.story-theme-sms{background:#f0f5ef;border:1px solid #d7e5d4;color:#344738;border-radius:24px 24px 7px 24px;padding:16px}.story-theme-sms:before{content:'MESSAGES  ·  TODAY'}
+.story-theme-email{background:#f5f8fc;border:1px solid #dbe4f0;color:#334257;border-radius:12px;padding:20px}.story-theme-email:before{content:'✉  INBOX  /  SAVED MESSAGE'}
+.story-theme-wedding{background:linear-gradient(145deg,#fff9f7,#f8e8e9);border:1px solid #d9b4b8;color:#70464d;border-radius:3px;padding:24px 20px;text-align:center;box-shadow:inset 0 0 0 5px rgba(255,255,255,.55),0 8px 22px rgba(100,50,60,.08)}.story-theme-wedding:before{content:'❦  OUR VOWS  ❦';letter-spacing:.24em}
+.story-theme-diary{background:#f8f2e8;border:1px solid #e6d7bd;color:#62513c;border-radius:16px 4px 16px 4px}.story-theme-diary:before{content:'PRIVATE DIARY  ·  DEAR ME'}
+.story-theme-ticket{background:linear-gradient(90deg,#fff8e8,#fffdf6);border:1px dashed #d3b879;color:#68552c;border-radius:10px;clip-path:none}.story-theme-ticket:before{content:'✦ KEEPSAKE TICKET ✦'}
+.story-theme-poem{background:#fbf8fc;border:1px solid #e8ddec;color:#65516b;border-radius:4px 24px 4px 24px;text-align:center;padding:25px 20px}.story-theme-poem:before{content:'POETRY  ·  LITTLE FRAGMENTS';letter-spacing:.2em}
+@media(max-width:600px){.library-story-paper{padding:16px;font-size:14px;line-height:1.75}.story-theme-wedding,.story-theme-poem{text-align:left}}
+</style>
+<style id="compact-card-dimensions-v21-6">
+/* V21.7：只微调卡片尺寸与间距，不覆盖原有配色、字体、主题和整体布局 */
+.card{padding:14px;margin-bottom:12px;border-radius:15px}
+.card h2{margin-bottom:10px}
+.stat{padding:13px;border-radius:14px}
+.stats{gap:9px}
+.api{padding:12px!important;margin-bottom:10px!important;border-radius:14px}
+.row{gap:7px}
+.grid{gap:10px}
+button{padding:8px 11px;border-radius:9px}
+input,textarea,select{padding:9px 10px;border-radius:9px}
+.main{padding:clamp(12px,2.5vw,22px)}
+@media(max-width:640px){
+ .main{padding:12px 11px 84px}
+ .top{gap:8px;margin-bottom:14px}
+ .top h1{font-size:clamp(20px,5vw,24px)}
+ .card{padding:12px;margin-bottom:10px;border-radius:14px}
+ .card h2{margin-bottom:9px}
+ .stat{padding:10px;border-radius:12px}
+ .stat strong{font-size:22px}
+ .stats{gap:7px}
+ .api{padding:10px!important;margin-bottom:8px!important;border-radius:12px}
+ button{padding:7px 10px}
+ input,textarea,select{padding:9px}
+}
+</style>
+</head>
+<body>
+<div id="app" class="layout hidden">
+ <div class="mobilebar"><div class="row"><div class="brandicon">⌘</div><b>API Hub</b></div><button id="menuBtn">☰ 目录</button></div>
+ <aside id="sidebar">
+  <div class="brand"><div class="brandicon">⌘</div><div>API Hub<div class="muted tiny">密钥管理中心</div></div></div>
+  <div class="navlabel">工作区</div>
+  <button class="nav active" data-view="overview">▦　总览</button>
+  <button class="nav" data-view="search">⌕　全局搜索</button>
+  <button class="nav" data-view="all">☷　全部 API <span class="num" id="sideCount">0</span></button>
+  <button class="nav" data-view="add">＋　添加 API</button>
+  <div class="navlabel">API 分类</div><div id="categoryNav"></div>
+  <div class="navlabel">网址目录</div><button class="nav" data-view="bookmarks">☆　收藏网址 <span class="num" id="bookmarkCount">0</span></button>
+  <div class="navlabel">玩家收藏</div><button class="nav" data-view="roles">♙　角色卡收藏馆 <span class="num" id="roleCount">0</span></button><button class="nav" data-view="library">▤　世界书与素材库 <span class="num" id="libraryCount">0</span></button><button class="nav nav-sub" data-library-shortcut="worldbook">↳　世界书独立库</button><button class="nav nav-sub" data-library-shortcut="preset">↳　酒馆预设独立库</button><button class="nav nav-sub" data-library-shortcut="story">↳　剧情片段独立库</button><button class="nav nav-sub" data-library-shortcut="tavern-ui">↳　酒馆美化预览库</button><button class="nav nav-sub" data-library-shortcut="phone-style">↳　小手机美化</button><button class="nav nav-sub" data-library-shortcut="bubble-style">↳　手机气泡美化</button><button class="nav" data-view="theater">▣　收藏小剧场 <span class="num" id="theaterCount">0</span></button>
+  <div class="navlabel">数据</div>
+  <button class="nav" data-view="backup">⇅　备份与恢复</button>
+  <div class="sidebottom"><div class="muted tiny" style="padding:10px">仅保存在当前浏览器 · 不自动上传</div></div>
+ </aside>
+ <main class="main">
+  <div class="top"><div style="min-width:0;flex:1"><h1 id="pageTitle">总览</h1><div class="muted tiny" id="pageSub">管理你的 API 地址、密钥与模型</div><div id="saveStatus" class="tiny muted" role="status" aria-live="polite" style="margin-top:5px">本地保存状态：正在读取</div><div class="global-searchbar"><input id="globalSearchInput" type="search" placeholder="全局搜索 API、网址、小剧场…" aria-label="全局搜索"><button class="primary" id="globalSearchBtn" type="button">搜索</button></div></div><div style="display:flex;gap:7px;align-items:center"><button id="openGuideBtn" type="button" title="使用说明">？说明</button><button class="primary" id="quickAdd">＋ 添加 API</button></div></div>
+  <section id="view-search" class="hidden">
+  <div class="card"><div class="sectiontitle"><h2>全局搜索结果</h2><span class="muted tiny" id="globalSearchSummary">输入关键词开始搜索</span></div><div class="muted tiny">搜索范围：API 名称、地址、分类、模型、标签、备注；收藏网址；文字与 HTML 小剧场标题、内容和分类。不会搜索或显示 API 密钥。</div><div id="globalSearchResults" style="margin-top:12px"></div></div>
+ </section>
+ <section id="view-overview">
+   <div class="stats"><div class="stat"><strong id="statTotal">0</strong><span>API 记录</span></div><div class="stat"><strong id="statCats">0</strong><span>分类数量</span></div><div class="stat"><strong id="statModels">0</strong><span>已保存模型</span></div></div>
+   <div class="card" style="margin-top:15px"><div class="sectiontitle"><h2>最近添加</h2><button data-goto="all">查看全部</button></div><div id="recentList"></div></div>
+   <details class="card" id="appearanceCard"><summary style="cursor:pointer;font-weight:700">🎨 外观与壁纸（点击展开）</summary><div style="padding-top:12px">
+    <label for="themeSelect">选择主题</label><select id="themeSelect"><option value="midnight">午夜蓝 · 简洁深色</option><option value="ocean">海洋青 · 清爽冷色</option><option value="lavender">薰衣草 · 柔和紫色</option><option value="pink">樱花粉 · 温柔明亮</option><option value="beige">奶油米黄 · 温暖柔和</option></select>
+    <label for="wallpaperFile">自定义壁纸（从手机相册选择图片）</label><input id="wallpaperFile" type="file" accept="image/*">
+    <div class="formactions"><button id="clearWallpaper">恢复默认背景</button></div>
+    <div class="notice">主题和壁纸设置保存在当前浏览器。为控制存储空间，壁纸会自动缩小后保存；更换浏览器或清除网站数据后需要重新设置。</div></div></details>
+   <div class="card"><h2>快速提示</h2><div class="muted tiny">• OpenAI 兼容接口一般可通过 Base URL + /models 获取模型列表。<br>• 连通性测试会请求模型列表接口，不会发送聊天内容。<br>• 若浏览器提示 CORS/跨域错误，可能需要服务商开放跨域或使用自己的后端代理。<br>• 不要把包含密钥的备份文件发给他人。</div></div>
+  </section>
+  <section id="view-all" class="hidden"><div class="card"><div class="toolbar"><input id="search" placeholder="搜索名称、URL、标签、模型…"><select id="filter"><option value="">全部分类</option></select></div><div id="apiList"></div></div></section>
+  <section id="view-bookmarks" class="hidden">
+   <div class="card">
+    <div class="sectiontitle"><h2>收藏网址</h2><span class="muted tiny" id="bookmarkSummary">0 个网址</span></div>
+    <p class="muted tiny">收藏常用网站、控制台、文档或签到页面。每条网址都可以添加备注、一键跳转和复制网址。</p>
+    <details id="bookmarkAddPanel" class="card" style="margin-top:12px;padding:14px" >
+     <summary style="cursor:pointer;font-weight:700">＋ 添加 / 编辑网址（点击展开或折叠）</summary>
+    <form id="bookmarkForm" style="margin-top:14px">
+     <input id="bookmarkId" type="hidden">
+     <div class="grid">
+      <div><label for="bookmarkName">网址名称 *</label><input id="bookmarkName" required maxlength="120" placeholder="例如：API 服务商控制台"></div>
+      <div><label for="bookmarkUrl">网址 URL *</label><input id="bookmarkUrl" type="url" required placeholder="https://example.com"></div>
+      <div><label for="bookmarkCategory">网址分类（选填）</label><input id="bookmarkCategory" maxlength="60" placeholder="例如：中转站、文档、工具"></div>
+      <div class="full"><label for="bookmarkNotes">备注（选填）</label><textarea id="bookmarkNotes" maxlength="1500" placeholder="用途、账号说明、签到时间等（请勿填写密码）"></textarea></div>
+     </div>
+     <div class="formactions"><button class="primary" type="submit" id="bookmarkSaveBtn">保存网址</button><button type="button" id="bookmarkCancel" class="hidden">取消编辑</button></div>
+    </form>
+    </details>
+   </div>
+   <div class="card" style="margin-top:15px"><div class="toolbar"><input id="bookmarkSearch" placeholder="搜索网址名称、URL、分类或备注…"><select id="bookmarkCategoryFilter"><option value="">全部网址分类</option></select></div><div id="bookmarkList"></div></div>
+  </section>
+  <section id="view-roles" class="hidden">
+   <div class="card"><div class="sectiontitle"><h2>角色卡收藏馆</h2><span class="muted tiny" id="roleSummary">0 张角色卡</span></div>
+    <p class="muted tiny">保存 SillyTavern 和其他 AI 角色扮演工具使用的角色卡资料。支持 JSON / TXT 原文导入，并可解析 SillyTavern 酒馆 PNG 角色卡内嵌的角色数据；导入后可复制原文、导出 JSON。</p>
+    <details id="roleAddPanel" class="card" style="margin-top:12px;padding:14px"><summary style="cursor:pointer;font-weight:700">＋ 添加 / 编辑角色卡（点击展开或折叠）</summary>
+     <form id="roleForm" style="margin-top:14px"><input id="roleId" type="hidden"><div class="grid">
+      <div><label for="roleTitle">角色名称 *</label><input id="roleTitle" required maxlength="160" placeholder="角色名称"></div>
+      <div><label for="roleCategory">分类（选填）</label><input id="roleCategory" maxlength="80" placeholder="例如：幻想、现代、原创角色"></div>
+      <div><label for="roleTags">标签（逗号分隔）</label><input id="roleTags" maxlength="500" placeholder="甜宠, 奇幻, 群聊"></div>
+      <div><label for="roleSource">来源网址（选填）</label><input id="roleSource" type="url" placeholder="https://..."></div>
+      <div class="full"><details class="fold-data"><summary>角色简介 / 备注（点击展开或折叠）</summary><label for="roleNotes">简介 / 备注</label><textarea id="roleNotes" maxlength="5000" rows="3" placeholder="角色特点、适用模型、作者等"></textarea></details></div>
+      <div class="full"><details class="fold-data"><summary>角色卡原始数据 / JSON（点击展开或折叠） *</summary><label for="roleRaw">角色卡原始内容 *</label><textarea id="roleRaw" required maxlength="1500000" rows="9" placeholder="粘贴角色卡 JSON / TXT 原文；也可以使用下方按钮导入文件"></textarea><div class="muted tiny">原始数据默认折叠，点击标题后可查看或编辑。保存时仍需要有角色卡原始内容。</div></details></div>
+      <div><label for="roleFile">导入 JSON / TXT 文件</label><input id="roleFile" type="file" accept=".json,.txt,application/json,text/plain"></div>
+      <div><label for="rolePngFile">导入酒馆 PNG 角色卡</label><input id="rolePngFile" type="file" accept=".png,image/png"><div class="muted tiny">自动读取 PNG 内嵌角色数据，并尝试生成封面缩略图。</div></div>
+      <div><label for="roleCoverFile">封面图片（选填）</label><input id="roleCoverFile" type="file" accept="image/*"><input id="roleCoverData" type="hidden"></div>
+     </div><div class="formactions"><button class="primary" type="submit" id="roleSaveBtn">保存角色卡</button><button type="button" id="roleCancel" class="hidden">取消编辑</button></div><div class="notice">为避免浏览器空间不足，封面建议使用较小图片。此处不会把角色卡上传到网络。酒馆 PNG 导入会提取内嵌角色 JSON；原始 PNG 不会作为完整文件保存在库中，建议同时保留原始 PNG 文件备份。</div></form>
+    </details>
+   </div>
+   <div class="card" style="margin-top:15px"><div class="toolbar"><input id="roleSearch" placeholder="搜索角色名、分类、标签、来源或内容…"><select id="roleCategoryFilter"><option value="">全部分类</option></select></div><div id="roleList"></div></div>
+  </section>
+  <section id="view-library" class="hidden">
+   <div class="library-search-wrap"><input id="librarySearch" placeholder="搜索当前目录…" aria-label="搜索当前目录"></div>
+   <div class="card library-head"><div class="sectiontitle"><h2 id="libraryHeading">世界书</h2><span class="muted tiny" id="librarySummary">0 条</span></div><div class="module-tabs"><button type="button" data-library-tab="worldbook">世界书</button><button type="button" data-library-tab="preset">酒馆预设</button><button type="button" data-library-tab="story">剧情片段</button><button type="button" data-library-tab="preview-image">预览图片</button><button type="button" data-library-tab="phone-style">小手机美化</button><button type="button" data-library-tab="bubble-style">手机气泡</button></div>
+    <details id="stPresetImportPanel" class="card" style="margin-top:12px;padding:14px" >
+     <summary style="cursor:pointer;font-weight:700">⇧ 导入 SillyTavern 酒馆预设 JSON（点击展开）</summary>
+     <p class="muted tiny">选择酒馆导出的生成预设 JSON。会把原始 JSON 完整保存到当前「酒馆预设」目录，不会覆盖现有预设。导入后自动切换到酒馆预设目录。</p>
+     <div class="formactions"><label for="stPresetFile" style="margin:0"><span style="display:inline-block;padding:9px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer">选择酒馆预设 JSON</span></label><input id="stPresetFile" class="hidden" type="file" accept=".json,application/json"></div>
+     <div class="muted tiny" id="stPresetStatus" aria-live="polite"></div>
+    </details>
+    <details id="libraryAddPanel" class="card" style="margin-top:12px;padding:14px"><summary style="cursor:pointer;font-weight:700">＋ 添加 / 编辑素材（点击展开或折叠）</summary>
+     <form id="libraryForm" style="margin-top:14px"><input id="libraryId" type="hidden"><div class="grid">
+      <div><label for="libraryTitle">标题 *</label><input id="libraryTitle" required maxlength="180" placeholder="给素材起个标题"></div>
+      <div id="libraryTypeSelectWrap"><label for="libraryType">素材类型</label><select id="libraryType"><option value="worldbook">世界书 / 设定</option><option value="prompt">AI 提示词</option><option value="preset">生成预设 / 参数</option><option value="story">剧情片段 / 开场白</option><option value="code">代码片段</option><option value="note">笔记 / 灵感</option><option value="asset">素材链接 / 资源</option><option value="tavern-ui">酒馆 CSS 文件</option><option value="preview-image">预览图片</option><option value="phone-style">小手机美化</option><option value="bubble-style">手机气泡</option></select></div>
+      <div id="libraryTypeLock" class="full">当前独立目录：<strong id="libraryTypeLockName">世界书</strong>。本目录只保存这一种类型，避免混存。</div>
+      <div><label for="libraryCategory">分类（选填）</label><input id="libraryCategory" maxlength="80" placeholder="例如：某个世界观、通用模板"></div>
+      <div><label for="libraryTags">标签（逗号分隔）</label><input id="libraryTags" maxlength="500" placeholder="角色扮演, 现代, 开场白"></div>
+      <div><label for="libraryCharacter">关联角色（选填）</label><input id="libraryCharacter" maxlength="120" placeholder="角色名称，用于剧情片段分类"></div><div id="storyTemplateWrap"><label for="storyTemplate">聊天片段美化模板</label><select id="storyTemplate"><option value="plain">简洁原文</option><option value="postcard">明信片 · 旅行纪念</option><option value="letter">书信 · 手写信笺</option><option value="dialogue">对话 · 角色剧本</option><option value="sms">短信 · 手机聊天</option><option value="email">邮箱 · 电子邮件</option><option value="wedding">婚书 · 誓约典藏</option><option value="diary">日记 · 私密手札</option><option value="ticket">票根 · 纪念收藏</option><option value="poem">诗笺 · 文艺留白</option></select><p class="muted tiny">只改变片段在收藏馆里的展示样式，不修改原始内容。</p></div><div class="full"><label for="librarySource">来源网址（选填）</label><input id="librarySource" type="url" placeholder="https://..."></div>
+      <div class="full"><label for="libraryNotes">备注（选填）</label><textarea id="libraryNotes" maxlength="5000" rows="2" placeholder="适用模型、用途、触发条件等"></textarea></div>
+      <div class="full"><label for="libraryContent">原始内容 / 资源说明 *</label><textarea id="libraryContent" required maxlength="1500000" rows="9" placeholder="粘贴世界书 JSON、提示词、预设、代码、剧情或资源说明"></textarea></div>
+      <div><label for="libraryFile">导入 CSS / JSON / TXT 文件</label><input id="libraryFile" type="file" accept=".json,.txt,.md,.js,.html,.css,application/json,text/plain,text/markdown,text/css"></div><div class="full muted tiny">小手机美化、手机气泡目录支持 CSS / JSON / TXT 导入。导入后可保存、编辑、复制或导出素材；聊天片段可选择明信片、书信、对话、短信、邮箱、婚书等精致展示模板。</div>
+     </div><div class="formactions"><button class="primary" type="submit" id="librarySaveBtn">保存素材</button><button type="button" id="libraryCancel" class="hidden">取消编辑</button></div></form>
+   </div>
+   <div id="libraryList" class="library-results"></div>
+  </section>
+  <section id="view-theater" class="hidden">
+   <div class="card"><div class="sectiontitle"><h2>收藏小剧场</h2><span class="muted tiny" id="theaterSummary">0 个小剧场</span></div>
+    <p class="muted tiny">收藏文字小剧场或 HTML 小剧场。HTML 会在格子外部直接预览；每个格子可折叠、复制、编辑、删除和排序。</p>
+    <details id="theaterAddPanel" class="card" style="margin-top:12px;padding:14px"><summary style="cursor:pointer;font-weight:700">＋ 添加 / 编辑小剧场（点击展开或折叠）</summary>
+     <form id="theaterForm" style="margin-top:14px"><input id="theaterId" type="hidden"><div class="grid">
+      <div><label for="theaterTitle">小剧场标题 *</label><input id="theaterTitle" required maxlength="120" placeholder="给这个小剧场起个标题"></div>
+      <div><label for="theaterCategory">格子分类（选填）</label><input id="theaterCategory" maxlength="60" placeholder="例如：互动、剧情、收藏"></div>
+      <div><label for="theaterCharacter">关联角色（选填）</label><input id="theaterCharacter" maxlength="120" placeholder="角色名称，便于按角色筛选"></div><div><label for="theaterType">内容类型</label><select id="theaterType"><option value="text">文字小剧场</option><option value="html">HTML 小剧场（格子外预览）</option></select></div>
+      <div class="full"><label for="theaterContent">小剧场内容 *</label><textarea id="theaterContent" required maxlength="300000" rows="8" placeholder="粘贴文字内容，或粘贴完整 HTML（包含 CSS / JS 也可以）"></textarea><div class="muted tiny">HTML 预览在隔离的 iframe 中运行，不会获得 API Hub 页面本身的访问权限。请只收藏可信的 HTML 内容。</div></div>
+     </div><div class="formactions"><button class="primary" type="submit" id="theaterSaveBtn">保存小剧场</button><button type="button" id="theaterCancel" class="hidden">取消编辑</button></div></form>
+    </details>
+   </div>
+   <div class="card" style="margin-top:15px"><div class="toolbar"><input id="theaterSearch" placeholder="搜索标题、内容、分类或角色…"><select id="theaterCharacterFilter"><option value="">全部角色</option></select><select id="theaterCategoryFilter"><option value="">全部分类</option></select></div><div id="theaterList"></div></div>
+  </section>
+  <section id="view-add" class="hidden"><div class="card"><h2 id="formTitle">添加 API</h2><form id="apiForm"><input id="recordId" type="hidden">
+   <div class="grid">
+    <div><label>名称 *</label><input id="name" required maxlength="100" placeholder="例如：我的 DeepSeek"></div>
+    <div><label>分类（选填）</label><input id="category" list="catOptions" maxlength="60" placeholder="例如：DeepSeek"><datalist id="catOptions"><option>OpenAI</option><option>Anthropic Claude</option><option>Google Gemini</option><option>DeepSeek</option><option>兼容接口</option><option>其他</option></datalist></div>
+    <div class="full"><label>API URL / Base URL *</label><input id="baseUrl" type="url" required placeholder="https://api.example.com/v1"></div>
+    <div class="full"><label>API Key / 密钥 *</label><input id="apiKey" required autocomplete="off" placeholder="粘贴 API 密钥"></div>
+    <div><label>默认模型</label><input id="model" placeholder="例如：deepseek-chat"></div>
+    <div><label>标签（逗号分隔）</label><input id="tags" placeholder="生产,备用,个人"></div>
+    <div class="full"><label>备注</label><textarea id="notes" maxlength="2000" placeholder="用途、额度说明、供应商等"></textarea></div>
+   </div>
+   <div class="formactions"><button class="primary" type="submit">保存到本地</button><button type="button" id="testForm">测试连通性</button><button type="button" id="fetchForm">拉取模型</button><button type="button" id="cancelEdit" class="hidden">取消编辑</button></div>
+   <div id="formStatus" class="status hidden"></div><div id="formModels" class="models"></div>
+   <div class="notice">URL 请填写服务商提供的 Base URL，通常类似 https://api.example.com/v1。不同供应商路径可能不同。</div>
+  </form></div></section>
+  <section id="view-backup" class="hidden"><div class="card"><h2>数据备份与恢复</h2><p class="muted tiny">数据优先保存在 IndexedDB（容量通常高于 localStorage），旧数据会在首次打开时尝试迁移。浏览器仍可能清理站点数据，请定期导出备份。全量 JSON 备份包含 API、书签目录、角色卡、世界书/素材、小剧场和界面设置。导入前会校验格式，可选择合并或全量替换；建议先导出一份备份。</p><div class="formactions"><button class="primary" id="exportBtn">一键导出 JSON</button><label for="importFile" style="margin:0"><span style="display:inline-block;padding:9px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer">一键导入 JSON</span></label><input id="importFile" class="hidden" type="file" accept=".json,application/json"></div><div class="notice">注意：数据仅保存在当前浏览器，不会云端同步。清除浏览器数据可能导致记录丢失，请定期导出备份。导出文件包含 API 密钥，请妥善保管。</div><div class="card" style="margin-top:12px"><h2>保存与备份状态</h2><p id="backupStatusText" class="muted tiny">正在读取状态…</p><div class="formactions"><button type="button" id="refreshStorageStatus">检查本地数据</button><button type="button" id="exportSafetyCopy">立即创建安全备份</button></div><p class="muted tiny">检查功能会读取当前浏览器中 API、网址、角色卡、素材和小剧场的数据量，不会上传数据。安全备份会下载一份 JSON 文件。</p></div><div class="formactions"><button class="danger" id="wipeBtn">删除所有数据并重置</button></div></div></section>
+ </main>
+ <div id="theaterStage" class="theater-stage" role="dialog" aria-modal="true" aria-label="HTML 小剧场放大预览">
+ <div class="theater-stage-bar"><div id="theaterStageTitle" class="theater-stage-title">HTML 小剧场预览</div><button type="button" id="theaterStageCopy" class="stage-copy">复制 HTML</button><button type="button" id="theaterStageReload">重新加载</button><button type="button" id="theaterStageClose" aria-label="关闭预览">关闭 ✕</button></div>
+ <iframe id="theaterStageFrame" title="放大互动预览" sandbox="allow-scripts allow-forms allow-modals allow-pointer-lock allow-popups" referrerpolicy="no-referrer"></iframe>
+</div>
+<div id="addModal" class="add-modal hidden" role="dialog" aria-modal="true" aria-labelledby="addModalTitle"><div class="add-modal-backdrop" data-close-add-modal></div><div class="add-modal-dialog"><div class="add-modal-head"><strong id="addModalTitle">添加内容</strong><button type="button" id="closeAddModal" aria-label="关闭">×</button></div><div id="addModalBody"></div></div></div>
+<div class="fab-wrap" id="fabWrap">
+  <div class="fab-menu hidden" id="fabMenu" aria-label="快捷添加菜单">
+   <button type="button" data-fab-action="add-api">＋ 添加 API</button>
+   <button type="button" data-fab-action="add-bookmark">☆ 添加收藏网址</button>
+   <button type="button" data-fab-action="add-role">♙ 添加角色卡</button><button type="button" data-fab-action="add-library">▤ 添加世界书 / 素材</button>
+   <button type="button" data-fab-action="add-theater">▣ 添加小剧场</button>
+   <button type="button" data-fab-action="bookmarks">▣ 打开收藏网址 <span id="fabBookmarkCount">0</span></button>
+  </div>
+  <button type="button" class="fab" id="fabButton" aria-label="快捷添加" aria-expanded="false">＋</button>
+ </div>
+</div>
+
+<div id="guideOverlay" class="guide-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+ <div class="guide-dialog glass">
+  <div class="guide-head"><div><div class="guide-kicker">WELCOME TO API HUB</div><h2 id="guideTitle">使用说明书</h2><p class="muted tiny">从这里开始，了解收藏、管理、备份与恢复。</p></div><button id="closeGuideX" type="button" aria-label="关闭说明书">✕</button></div>
+  <div class="guide-body">
+   <div class="guide-callout"><b>先记住两件事</b><p>① 资料默认保存在当前浏览器，不会自动上传云端。② 更换浏览器、清除网站数据或更换设备前，请先导出完整 JSON 备份。</p></div>
+   <details open><summary>一、快速认识首页</summary><p>「总览」查看 API 数量、最近添加记录和外观设置。左侧目录切换各个功能模块；手机上可点「目录」打开导航。右下角「＋」可以快速新增 API、网址、角色卡、素材或小剧场。</p></details>
+   <details><summary>二、API 管理</summary><ol><li>进入「添加 API」，填写名称、Base URL 和服务商提供的密钥；分类、模型、标签和备注按需填写。</li><li>保存后可在 API 列表查看、编辑、复制地址或密钥，并使用连接测试/模型拉取（具体取决于服务商接口是否兼容）。</li><li>密钥属于敏感信息，避免截图分享；不要把带密钥的备份发送给他人。</li><li>遇到跨域/CORS 错误时，通常是服务商或浏览器限制，不一定代表密钥错误。</li></ol></details>
+   <details><summary>三、收藏网址</summary><p>在「收藏网址」添加名称、网址、可选分类和备注；可以整理常用控制台、SillyTavern 地址、文档和签到页。备注不要填写密码。点击网址前确认域名可信。</p></details>
+   <details><summary>四、角色卡收藏馆</summary><p>可导入支持的 SillyTavern PNG 角色卡并解析其中的角色 JSON。导入后检查角色名、简介和原始数据，再保存。不同来源或版本的 PNG 元数据可能不同；若解析失败，请保留原始 PNG 并尝试酒馆导出的 JSON。应用通常保存解析数据和预览图，不应把它当作原始 PNG 的唯一备份。</p></details>
+   <details><summary>五、世界书、素材与酒馆预设</summary><p>「世界书与素材库」顶部标签或左侧子目录可分别查看世界书、酒馆预设、剧情片段和酒馆美化主题。剧情片段可填写关联角色，小剧场也可关联角色并按角色筛选。酒馆预设可在「世界书与素材库 → 酒馆预设」目录顶部导入 JSON；CSS 文件可在独立目录保存和查看原文；本版本不再模拟真实酒馆运行环境。不同酒馆版本与扩展格式可能存在差异，请保留原文件并核对导入结果。</p></details>
+   <details><summary>六、收藏小剧场</summary><p>可以保存文字内容或 HTML 小剧场。HTML 预览可能运行脚本；只运行你信任的代码，不要把含有未知脚本的文件当作安全内容。需要修改时先备份原文。</p></details>
+   <details><summary>七、全局搜索</summary><p>使用顶部搜索框查找 API、网址、角色卡、素材和小剧场的相关文本。搜索不会用于显示 API 密钥；如搜索结果不全，请进入对应模块检查分类筛选。</p></details>
+   <details><summary>八、备份与恢复（非常重要）</summary><ol><li>定期进入「备份与恢复」，点击完整 JSON 导出，并把文件保存到手机文件管理器或可靠的云盘。</li><li>导入前先导出当前版本，作为恢复点。</li><li>合并模式会按记录 ID 合并；全量替换会替换现有模块数据，操作前务必确认。</li><li>备份可能包含 API 密钥、私人角色卡和个人资料，请妥善保管。</li><li>导入后检查各模块记录数量和重要内容是否齐全。</li></ol></details>
+   <details><summary>九、主题、壁纸与手机使用</summary><p>首页「外观与壁纸」可切换主题和设置壁纸。壁纸按原始文件保存，不会被压缩或缩放。建议使用最新版 Chrome 等现代浏览器；磨砂玻璃效果受浏览器支持影响。若安装成 PWA，也请保持固定网址并定期备份。</p></details>
+   <details><summary>十、常见问题排查</summary><ul><li><b>刷新后资料不见：</b>确认网址和浏览器没有改变；检查是否清除了网站数据；尝试从备份导入。</li><li><b>保存失败：</b>可能是浏览器存储空间不足；先导出备份，再减少过大的图片或长文本。</li><li><b>导入失败：</b>确认文件类型正确、JSON 完整，且文件没有损坏；酒馆预设使用专用入口。</li><li><b>模型拉取失败：</b>检查 Base URL、密钥、服务商接口兼容性和跨域限制。</li><li><b>换设备使用：</b>本地数据不会自动迁移；需手动导出并在新设备导入，或另行搭建云端同步。</li></ul></details>
+   <div class="guide-callout"><b>隐私与安全声明</b><p>当前版本是本地浏览器存储工具，不提供服务器端账号或自动云同步。任何网页本地存储都可能因浏览器清理、设备故障或用户操作而丢失，因此完整 JSON 备份仍然必不可少。</p></div>
+  </div>
+  <div class="guide-foot"><label class="guide-check"><input type="checkbox" id="dontShowGuideAgain"> 下次进入时不自动显示</label><div><button id="closeGuideBtn" class="primary" type="button">我知道了，开始使用</button></div></div>
+ </div>
+</div>
+<style>
+.guide-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(14,20,30,.42);backdrop-filter:blur(16px) saturate(125%);-webkit-backdrop-filter:blur(16px) saturate(125%)}
+.guide-overlay.hidden{display:none!important}.guide-dialog{width:min(760px,100%);max-height:min(88dvh,900px);display:flex;flex-direction:column;overflow:hidden;border-radius:24px;border:1px solid rgba(255,255,255,.78);background:rgba(246,248,251,.78);box-shadow:0 24px 70px rgba(20,30,45,.22),inset 0 1px rgba(255,255,255,.95);backdrop-filter:blur(32px) saturate(140%);-webkit-backdrop-filter:blur(32px) saturate(140%);color:#202938}
+.guide-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px 14px;border-bottom:1px solid rgba(255,255,255,.75)}.guide-head h2{margin:5px 0;font-size:24px}.guide-kicker{font-size:10px;letter-spacing:.18em;font-weight:800;color:#64748b}.guide-head button{border-radius:50%;width:34px;min-height:34px;padding:0;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.9)}.guide-body{padding:14px 20px;overflow:auto;overscroll-behavior:contain}.guide-body details{border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.34);border-radius:14px;padding:12px 14px;margin:9px 0;box-shadow:inset 0 1px rgba(255,255,255,.55),0 4px 14px rgba(45,55,70,.035)}.guide-body summary{cursor:pointer;font-weight:700;font-size:14px}.guide-body p,.guide-body li{font-size:13px;line-height:1.75;color:#465264}.guide-body ol,.guide-body ul{padding-left:21px}.guide-callout{padding:13px 15px;border-radius:15px;background:rgba(226,232,240,.55);border:1px solid rgba(255,255,255,.92);box-shadow:inset 0 1px rgba(255,255,255,.8)}.guide-callout p{margin:6px 0 0}.guide-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 20px 17px;border-top:1px solid rgba(255,255,255,.8)}.guide-check{display:flex;align-items:center;gap:8px;font-size:12px;color:#596579}.guide-foot button{min-height:34px!important;padding:7px 13px!important;border-radius:12px!important}@media(max-width:600px){.guide-overlay{padding:8px}.guide-dialog{max-height:92dvh;border-radius:19px}.guide-head{padding:16px 15px 10px}.guide-body{padding:10px 12px}.guide-foot{padding:11px 13px}.guide-head h2{font-size:21px}}
+
+/* V18.6：独立资料类型、紧凑表单与预览体验修复 */
+#libraryAddPanel{display:none;padding:9px!important;margin-top:8px!important;border-radius:14px!important}
+#libraryAddPanel>summary{font-size:13px;padding:5px 2px;color:var(--muted)}
+#libraryForm{margin-top:8px!important}
+#libraryForm .grid{gap:9px!important}
+#libraryForm input:not([type=file]),#libraryForm select,#libraryForm textarea{padding:8px 10px!important;min-height:36px;font-size:13px;border-radius:10px}
+#libraryForm textarea{min-height:68px;resize:vertical}
+#libraryForm #libraryContent{min-height:112px}
+#libraryForm label{font-size:12px;margin-bottom:4px}
+#libraryForm .formactions{margin-top:9px!important;gap:7px}
+#libraryForm .formactions button{min-height:34px!important;padding:7px 12px!important;font-size:12px!important}
+#libraryTypeLock{display:none;border:1px solid var(--line);background:var(--panel2);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--muted)}
+#libraryTypeLock strong{color:var(--text)}
+.library-actions button{min-height:30px!important;padding:5px 9px!important;font-size:12px!important}
+#theaterStageFrame{background:#f5f5f7}
+@media(max-width:600px){#libraryForm .grid{grid-template-columns:1fr!important}#libraryForm #libraryContent{min-height:95px}#libraryAddPanel{padding:8px!important}}
+
+/* V21.1：手机端紧凑布局、导入前预览与数据保护 */
+@media(max-width:600px){
+ .main{padding:12px 10px 82px!important}
+ .card{padding:13px!important;margin-bottom:12px!important}
+ .sectiontitle{gap:8px;align-items:flex-start}
+ .sectiontitle h2,h2{font-size:18px;line-height:1.35}
+ .toolbar{gap:7px!important}
+ .toolbar input,.toolbar select{min-width:0;max-width:100%;font-size:14px!important;padding:10px!important}
+ .formgrid,.grid{gap:10px!important}
+ input,select,textarea{font-size:14px!important;max-width:100%;box-sizing:border-box}
+ textarea{min-height:84px}
+ .formactions{gap:7px!important;flex-wrap:wrap}
+ .formactions button{flex:1 1 auto;min-width:95px}
+ .library-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:start!important;grid-auto-rows:min-content!important}
+ .library-card{align-self:start!important;height:fit-content!important;min-width:0}
+ .library-card .library-content{max-height:170px;overflow:hidden;overflow-wrap:anywhere}
+ .library-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .library-actions button{min-width:0;white-space:normal;line-height:1.25}
+ #roleCategoryFilter,#libraryCategoryFilter,#theaterCategoryFilter{width:100%;min-height:40px}
+ #backupStatusText{overflow-wrap:anywhere;line-height:1.6}
+}
+@media(max-width:380px){.library-grid{grid-template-columns:minmax(0,1fr)!important}}
+.import-review{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--panel2);margin:10px 0;line-height:1.65}
+.import-review strong{display:block;margin-bottom:4px}
+
+/* V21.4: remove legacy assistant UI; storage is moved to IndexedDB when available. */
+#view-assistant,.nav[data-view="assistant"],body.assistant-mode .assistant-chat,body.assistant-mode .assistant-composer-wrap,body.assistant-mode .assistant-settings{display:none!important}
+</style>
+
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id), DB='apihub-records-v1';
+let records=[],bookmarks=[],theaters=[],roleCards=[],libraryItems=[],currentView='overview',categoryView=null,currentLibraryType='';
+const BOOKMARK_DB='apihub-bookmarks-v1', THEATER_DB='apihub-theaters-v1', ROLE_DB='apihub-role-cards-v1', LIBRARY_DB='apihub-player-library-v1';
+const STORAGE_DB_NAME='apihub-storage-v2', STORAGE_DB_VERSION=1, STORAGE_STORE='records';
+let storageDbPromise=null, storageBackend='正在检测';
+function openStorageDB(){
+ if(!('indexedDB' in window)) return Promise.reject(new Error('此浏览器不支持 IndexedDB'));
+ if(!storageDbPromise) storageDbPromise=new Promise((resolve,reject)=>{
+  const req=indexedDB.open(STORAGE_DB_NAME,STORAGE_DB_VERSION);
+  req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(STORAGE_STORE))db.createObjectStore(STORAGE_STORE)};
+  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||new Error('打开本地数据库失败'));
+ });
+ return storageDbPromise;
+}
+async function storageGet(key){const db=await openStorageDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORAGE_STORE,'readonly'),req=tx.objectStore(STORAGE_STORE).get(key);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||new Error('读取失败'))})}
+async function storageSet(key,value){const db=await openStorageDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORAGE_STORE,'readwrite');tx.objectStore(STORAGE_STORE).put(value,key);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error||new Error('写入失败'));tx.onabort=()=>reject(tx.error||new Error('写入中断'))})}
+async function storageRemove(key){const db=await openStorageDB();return new Promise((resolve,reject)=>{const tx=db.transaction(STORAGE_STORE,'readwrite');tx.objectStore(STORAGE_STORE).delete(key);tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error||new Error('删除失败'))})}
+async function readAppData(key){
+ try{const v=await storageGet(key);if(v!==undefined){storageBackend='IndexedDB（扩展本地存储）';return v}
+  let legacy=null;try{legacy=localStorage.getItem(key)}catch{}
+  if(legacy!==null){try{const parsed=JSON.parse(legacy);await storageSet(key,parsed);storageBackend='IndexedDB（已迁移旧数据）';return parsed}catch(e){storageBackend='IndexedDB';return JSON.parse(legacy)}}
+  storageBackend='IndexedDB（扩展本地存储）';return null;
+ }catch(e){storageBackend='兼容模式（localStorage，容量较小）';try{const raw=localStorage.getItem(key);return raw===null?null:JSON.parse(raw)}catch{return null}}
+}
+async function writeAppData(key,value){
+ try{await storageSet(key,value);storageBackend='IndexedDB（扩展本地存储）';return}
+ catch(idbError){try{localStorage.setItem(key,JSON.stringify(value));storageBackend='兼容模式（localStorage，容量较小）';return}catch(lsError){throw new Error('本地保存失败：浏览器存储空间不足或禁止本地存储。请立即导出 JSON 备份，并检查浏览器的站点存储权限。IndexedDB：'+(idbError.message||idbError)+'；兼容存储：'+(lsError.message||lsError))}}
+}
+async function requestPersistentStorage(){try{if(navigator.storage&&navigator.storage.persist){const granted=await navigator.storage.persist();return granted?'浏览器已同意尽量保留站点数据':'浏览器未授予持久化权限；仍建议定期导出备份'}return '浏览器未提供持久化权限接口'}catch{return '无法确认持久化权限'}}
+async function getStorageInfo(){let estimate=null,persisted=null;try{if(navigator.storage?.estimate)estimate=await navigator.storage.estimate();if(navigator.storage?.persisted)persisted=await navigator.storage.persisted()}catch{}return {estimate,persisted,backend:storageBackend}}
+function markSaved(label='已保存到当前浏览器'){try{localStorage.setItem('apihub-last-saved-v1',new Date().toISOString())}catch{}const el=$('saveStatus');if(el)el.textContent='本地保存状态：'+label+' · '+new Date().toLocaleString();refreshBackupStatus()}
+async function saveTheaters(){try{await writeAppData(THEATER_DB,theaters);markSaved()}catch(e){throw Error('小剧场保存失败：'+e.message)}}
+async function saveRoles(){try{await writeAppData(ROLE_DB,roleCards);markSaved()}catch(e){throw Error('角色卡保存失败：'+e.message)}}
+async function saveLibrary(){try{await writeAppData(LIBRARY_DB,libraryItems);markSaved()}catch(e){throw Error('素材库保存失败：'+e.message)}}
+async function saveBookmarks(){try{await writeAppData(BOOKMARK_DB,bookmarks);markSaved()}catch(e){throw Error('收藏网址保存失败：'+e.message)}}
+async function save(){try{await writeAppData(DB,records);markSaved()}catch(e){throw Error('API 保存失败：'+e.message)}}
+async function refreshBackupStatus(){const el=$('backupStatusText');if(!el)return;let last='',saved='';try{last=localStorage.getItem('apihub-last-export-v1')||'';saved=localStorage.getItem('apihub-last-saved-v1')||''}catch{}const info=await getStorageInfo();let size='';if(info.estimate&&Number.isFinite(info.estimate.usage)){size=' 浏览器已用空间约 '+(info.estimate.usage/1024/1024).toFixed(2)+' MB';if(Number.isFinite(info.estimate.quota))size+=' / 可用配额约 '+(info.estimate.quota/1024/1024).toFixed(0)+' MB';size+='。'}const persistText=info.persisted===true?'持久化权限：已授予。':info.persisted===false?'持久化权限：未授予。':'持久化权限：浏览器未提供状态。';el.textContent='记录数量：API '+records.length+' 条、网址 '+bookmarks.length+' 条、角色卡 '+roleCards.length+' 张、素材 '+libraryItems.length+' 条、小剧场 '+theaters.length+' 个。存储方式：'+info.backend+'。'+persistText+size+' 最近本地保存：'+(saved?new Date(saved).toLocaleString():'尚无记录')+'。最近导出备份：'+(last?new Date(last).toLocaleString():'尚未记录导出时间')+'。请定期导出备份；浏览器或系统清理数据仍可能删除本地内容。'}
+async function exportFullBackup(){
+ // 壁纸保存在 IndexedDB；导出时必须从同一存储后端读取，不能只读 localStorage。
+ let wallpaper='';try{const savedWallpaper=await readAppData('apihub-wallpaper-v1');if(typeof savedWallpaper==='string')wallpaper=savedWallpaper;}catch(e){alert('读取壁纸备份失败，已取消导出以免生成不完整备份：'+(e.message||e));return;}
+ const payload={format:'apihub-local-backup',version:9,exportedAt:new Date().toISOString(),app:'API Hub Player Collection',records,bookmarks,theaters,roleCards,libraryItems,preferences:{theme:(()=>{try{return localStorage.getItem('apihub-theme-v1')||''}catch{return ''}})(),wallpaper}};
+ try{const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='apihub-backup-'+new Date().toISOString().slice(0,10)+'.json';a.style.display='none';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);try{localStorage.setItem('apihub-last-export-v1',new Date().toISOString())}catch{}await refreshBackupStatus();}catch(e){alert('导出失败：'+(e.message||e)+'。请检查设备可用空间和浏览器下载权限。')}
+} 
+$('refreshStorageStatus')?.addEventListener('click',async()=>{const persist=await requestPersistentStorage();await refreshBackupStatus();alert('检查完成。'+persist+' 数据仍仅保存在本机浏览器，不会上传。浏览器/系统清理仍可能导致数据丢失，请定期导出 JSON 备份。')});
+$('exportSafetyCopy')?.addEventListener('click',exportFullBackup);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function say(el,msg,cls=''){el.className='status '+cls;el.textContent=msg;el.classList.remove('hidden')}
+function applyAppearance(){
+ const theme=localStorage.getItem('apihub-theme-v1')||'pink';
+ document.body.dataset.theme=theme;
+ const sel=$('themeSelect');if(sel)sel.value=theme;
+ if(window.__apiHubWallpaper)document.body.style.setProperty('--wallpaper',`linear-gradient(135deg,#0002,#0001),url("${String(window.__apiHubWallpaper).replace(/[\\"\\n\\r]/g, '')}")`);
+ else document.body.style.removeProperty('--wallpaper');
+}
+document.addEventListener('change',async e=>{
+ if(e.target.id==='themeSelect'){localStorage.setItem('apihub-theme-v1',e.target.value);applyAppearance()}
+ if(e.target.id==='wallpaperFile'){
+  const file=e.target.files&&e.target.files[0];if(!file)return;
+  if(!file.type.startsWith('image/')){alert('请选择图片文件');e.target.value='';return}
+  try{
+   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=reject;reader.readAsDataURL(file)});
+   await writeAppData('apihub-wallpaper-v1',data);window.__apiHubWallpaper=data;
+   applyAppearance();alert('壁纸已按原始文件保存，未压缩、未缩放。');
+  }catch(err){alert('设置壁纸失败：'+(err.message||'无法读取图片'))}
+  e.target.value='';
+ }
+});
+$('clearWallpaper').onclick=async()=>{try{await storageRemove('apihub-wallpaper-v1')}catch{}try{localStorage.removeItem('apihub-wallpaper-v1')}catch{}window.__apiHubWallpaper='';applyAppearance()};
+async function initLocalData(){
+ try {
+  const [a,b,t,r,l,wp]=await Promise.all([readAppData(DB),readAppData(BOOKMARK_DB),readAppData(THEATER_DB),readAppData(ROLE_DB),readAppData(LIBRARY_DB),readAppData('apihub-wallpaper-v1')]);
+  window.__apiHubWallpaper=typeof wp==='string'?wp:'';
+  records=Array.isArray(a)?a:[];bookmarks=Array.isArray(b)?b:[];theaters=Array.isArray(t)?t:[];roleCards=Array.isArray(r)?r:[];libraryItems=Array.isArray(l)?l:[];
+  try{if(navigator.storage?.persist)await navigator.storage.persist()}catch{}
+ }catch(e){records=[];bookmarks=[];theaters=[];roleCards=[];libraryItems=[];alert('读取本地数据时遇到问题。请勿清理浏览器数据；建议尝试导入之前的 JSON 备份。错误：'+(e.message||e));}
+ $('app').classList.remove('hidden');renderAll();go('overview');refreshBackupStatus();
+}
+function cats(){return [...new Set(records.map(r=>r.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN'))}
+function go(view,cat=null){document.body.classList.toggle("library-mode",view==="library");document.body.classList.toggle("roles-mode",view==="roles");currentView=view;categoryView=cat;document.querySelectorAll('section[id^="view-"]').forEach(s=>s.classList.add('hidden'));let actual=cat?'all':view;$('view-'+actual)?.classList.remove('hidden');document.querySelectorAll('.nav[data-view]').forEach(n=>n.classList.toggle('active',n.dataset.view===view&& !cat));$('pageTitle').textContent=cat||({overview:'总览',search:'全局搜索',all:'全部 API',add:'添加 API',bookmarks:'收藏网址',roles:'角色卡收藏馆',library:'世界书与素材库',theater:'收藏小剧场',backup:'备份与恢复'}[view]||view);$('pageSub').textContent=cat?'分类中的 API 记录':(view==='roles'?'管理已收藏的角色卡，支持导入、编辑、复制与导出':view==='search'?'跨模块搜索，不会搜索或显示 API 密钥':view==='bookmarks'?'收藏网址、备注、复制与一键跳转':view==='library'?'管理世界书、预设、剧情片段与美化素材':view==='theater'?'保存和整理小剧场内容':'管理你的 API 地址、密钥与模型');if(cat){$('filter').value=cat;renderList()}if(view==='add')$('name').focus({preventScroll:true});if(view==='bookmarks')renderBookmarks();if(view==='roles')renderRoles();if(view==='library')renderLibrary();if(view==='theater')renderTheaters();if(view==='search')renderGlobalSearch();refreshFabMenu();$('sidebar').classList.remove('open')}
+document.querySelectorAll('.nav[data-view]').forEach(n=>n.onclick=()=>go(n.dataset.view));document.querySelectorAll('[data-goto]').forEach(n=>n.onclick=()=>go(n.dataset.goto));$('quickAdd').onclick=()=>{resetForm();go('add')};$('menuBtn').onclick=()=>$('sidebar').classList.toggle('open');
+function refreshFabMenu(){const menu=$('fabMenu');if(!menu)return;let items=[];if(currentView==='library'){const t=currentLibraryType||'worldbook';items=[{action:'add-library',label:'＋ 添加'+(libraryTypeNames[t]||t),type:t}]}else if(currentView==='roles'){items=[{action:'add-role',label:'＋ 添加角色卡'}]}else if(currentView==='theater'){items=[{action:'add-theater',label:'＋ 添加小剧场'}]}else if(currentView==='bookmarks'){items=[{action:'add-bookmark',label:'＋ 添加收藏网址'}]}else if(currentView==='add'){items=[{action:'add-api',label:'＋ 添加 API'}]}else{items=[{action:'add-api',label:'＋ 添加 API'},{action:'add-bookmark',label:'＋ 添加收藏网址'},{action:'add-role',label:'＋ 添加角色卡'},{action:'add-library',label:'＋ 添加素材（进入当前目录）'},{action:'add-theater',label:'＋ 添加小剧场'}]}menu.innerHTML=items.map(x=>`<button type="button" data-fab-action="${x.action}" ${x.type?`data-fab-type="${x.type}"`:''}>${x.label}</button>`).join('')}
+let addModalPanel=null,addModalPlaceholder=null;function closeAddModal(){const modal=$('addModal');if(addModalPanel&&addModalPlaceholder&&addModalPlaceholder.parentNode){addModalPlaceholder.parentNode.insertBefore(addModalPanel,addModalPlaceholder);addModalPlaceholder.remove();}if(addModalPanel){addModalPanel.style.display='';if(addModalPanel.id==='libraryAddPanel')addModalPanel.open=false;}addModalPanel=null;addModalPlaceholder=null;modal.classList.add('hidden');document.body.style.overflow='';}
+function openAddModal(panelId,title){const panel=$(panelId);if(!panel)return;closeAddModal();addModalPanel=panel;addModalPlaceholder=document.createComment('add-panel-placeholder');panel.parentNode.insertBefore(addModalPlaceholder,panel);$('addModalBody').appendChild(panel);$('addModalTitle').textContent=title;panel.style.display='block';if(panel.tagName==='DETAILS')panel.open=true;$('addModal').classList.remove('hidden');document.body.style.overflow='hidden';const focus=panel.querySelector('input:not([type=hidden]),textarea,select');if(focus)setTimeout(()=>focus.focus({preventScroll:true}),80);}
+$('closeAddModal').onclick=closeAddModal;$('addModal').addEventListener('click',e=>{if(e.target.matches('[data-close-add-modal]'))closeAddModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('addModal').classList.contains('hidden'))closeAddModal()});
+$('fabButton').onclick=()=>{if(currentView==='library'){openAddModal('libraryAddPanel','添加'+(libraryTypeNames[currentLibraryType||'worldbook']||'世界书'));return}if(currentView==='bookmarks'){resetBookmarkForm();openAddModal('bookmarkAddPanel','添加收藏网址');return}if(currentView==='roles'){resetRoleForm();openAddModal('roleAddPanel','添加角色卡');return}if(currentView==='theater'){resetTheaterForm();openAddModal('theaterAddPanel','添加小剧场');return}if(currentView==='add'){resetForm();go('add');return}const menu=$('fabMenu');refreshFabMenu();menu.classList.toggle('hidden');$('fabButton').setAttribute('aria-expanded',String(!menu.classList.contains('hidden')));$('fabButton').textContent=menu.classList.contains('hidden')?'＋':'×'};
+document.addEventListener('click',e=>{const action=e.target.closest('[data-fab-action]');if(action){const kind=action.dataset.fabAction;$('fabMenu').classList.add('hidden');$('fabButton').setAttribute('aria-expanded','false');$('fabButton').textContent='＋';if(kind==='add-api'){resetForm();go('add')}else if(kind==='add-bookmark'){go('bookmarks');resetBookmarkForm();openAddModal('bookmarkAddPanel','添加收藏网址')}else if(kind==='add-theater'){go('theater');resetTheaterForm();openAddModal('theaterAddPanel','添加小剧场')}else if(kind==='add-role'){go('roles');resetRoleForm();openAddModal('roleAddPanel','添加角色卡')}else if(kind==='add-library'){const chosen=action.dataset.fabType||currentLibraryType||'worldbook';if(currentView!=='library')go('library');setLibraryType(chosen);resetLibraryForm();openAddModal('libraryAddPanel','添加'+(libraryTypeNames[chosen]||'素材'))}return}if(!e.target.closest('#fabWrap')){$('fabMenu')?.classList.add('hidden');$('fabButton')?.setAttribute('aria-expanded','false');if($('fabButton'))$('fabButton').textContent='＋'}});
+function runGlobalSearch(){const q=$('globalSearchInput').value.trim();go('search');renderGlobalSearch(q)}
+$('globalSearchBtn').onclick=runGlobalSearch;
+$('globalSearchInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runGlobalSearch()}});
+function renderGlobalSearch(forcedQuery){
+ const q=String(forcedQuery!==undefined?forcedQuery:($('globalSearchInput')?.value||'')).trim().toLowerCase();
+ const root=$('globalSearchResults'),summary=$('globalSearchSummary');if(!root||!summary)return;
+ if(!q){summary.textContent='输入关键词开始搜索';root.innerHTML='<div class="empty">可搜索 API、收藏网址和收藏小剧场。不会搜索 API 密钥。</div>';return}
+ const matches=[];
+ records.forEach(r=>{const hay=[r.name,r.category,r.baseUrl,r.model,(r.tags||[]).join(' '),r.notes].join(' ').toLowerCase();if(hay.includes(q))matches.push({kind:'API',title:r.name||'未命名 API',detail:[r.category,r.baseUrl,r.model,(r.tags||[]).join(', '),r.notes].filter(Boolean).join(' · '),id:r.id,view:'all',needle:r.name||q})});
+ bookmarks.forEach(b=>{const hay=[b.name,b.url,b.category,b.notes].join(' ').toLowerCase();if(hay.includes(q))matches.push({kind:'收藏网址',title:b.name||'未命名网址',detail:[b.category,b.url,b.notes].filter(Boolean).join(' · '),id:b.id,view:'bookmarks',needle:b.name||q})});
+ theaters.forEach(t=>{const hay=[t.title,t.content,t.category,t.type].join(' ').toLowerCase();if(hay.includes(q))matches.push({kind:t.type==='html'?'HTML 小剧场':'文字小剧场',title:t.title||'未命名小剧场',detail:[t.category,t.type==='html'?'可互动预览':'文字内容',String(t.content||'').replace(/\s+/g,' ').slice(0,180)].filter(Boolean).join(' · '),id:t.id,view:'theater',needle:t.title||q})});
+ roleCards.forEach(r=>{const hay=[r.title,r.category,(r.tags||[]).join(' '),r.source,r.notes,r.raw].join(' ').toLowerCase();if(hay.includes(q))matches.push({kind:'角色卡',title:r.title||'未命名角色卡',detail:[r.category,(r.tags||[]).join(', '),r.source,r.notes,String(r.raw||'').replace(/\s+/g,' ').slice(0,140)].filter(Boolean).join(' · '),id:r.id,view:'roles',needle:r.title||q})});
+ libraryItems.forEach(x=>{const hay=[x.title,x.type,x.category,(x.tags||[]).join(' '),x.source,x.notes,x.content].join(' ').toLowerCase();if(hay.includes(q))matches.push({kind:({worldbook:'世界书 / 设定',prompt:'AI 提示词',preset:'生成预设',story:'剧情片段',code:'代码片段',note:'笔记 / 灵感',asset:'素材链接','tavern-ui':'酒馆美化 CSS'}[x.type]||'玩家素材'),title:x.title||'未命名素材',detail:[x.category,(x.tags||[]).join(', '),x.notes,String(x.content||'').replace(/\s+/g,' ').slice(0,140)].filter(Boolean).join(' · '),id:x.id,view:'library',needle:x.title||q})});
+ summary.textContent=`找到 ${matches.length} 条结果`;
+ root.innerHTML=matches.length?matches.map((m,i)=>`<article class="global-result"><div class="global-result-main"><div class="global-result-type">${esc(m.kind)}</div><div class="global-result-title">${esc(m.title)}</div><div class="global-result-snippet">${esc(m.detail||'暂无摘要')}</div></div><button type="button" class="primary-action" data-global-open="${i}">打开所在目录</button></article>`).join(''):'<div class="empty">没有找到匹配内容。试试更短的关键词。</div>';
+ root.querySelectorAll('[data-global-open]').forEach(btn=>btn.onclick=()=>{const m=matches[Number(btn.dataset.globalOpen)];if(!m)return;if(m.view==='all'){$('search').value=m.needle;categoryView=null;go('all');renderList()}else if(m.view==='bookmarks'){$('bookmarkSearch').value=m.needle;go('bookmarks');renderBookmarks()}else if(m.view==='roles'){$('roleSearch').value=m.needle;go('roles');renderRoles()}else if(m.view==='library'){$('librarySearch').value=m.needle;go('library');renderLibrary()}else{$('theaterSearch').value=m.needle;go('theater');renderTheaters()}});
+}
+function renderAll(){renderNav();renderStats();renderList();renderRecent();renderBookmarks();renderRoles();renderLibrary();renderTheaters();if(currentView==='search')renderGlobalSearch()}
+function renderNav(){let cs=cats();$('sideCount').textContent=records.length;if($('bookmarkCount'))$('bookmarkCount').textContent=bookmarks.length;if($('fabBookmarkCount'))$('fabBookmarkCount').textContent=bookmarks.length;if($('theaterCount'))$('theaterCount').textContent=theaters.length;if($('roleCount'))$('roleCount').textContent=roleCards.length;if($('libraryCount'))$('libraryCount').textContent=libraryItems.length;$('categoryNav').innerHTML=cs.length?cs.map(c=>`<button class="nav" data-cat="${esc(c)}">▸　${esc(c)} <span class="num">${records.filter(r=>r.category===c).length}</span></button>`).join(''):'<div class="muted tiny" style="padding:8px 10px">暂无分类</div>';$('categoryNav').querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{go('all',b.dataset.cat)})}
+function renderStats(){$('statTotal').textContent=records.length;$('statCats').textContent=cats().length;$('statModels').textContent=new Set(records.flatMap(r=>[...(r.models||[]),r.model].filter(Boolean))).size}
+function providerMark(r){
+ const n=(r.name||'API').trim();
+ const presets=[['openai','◎'],['claude','✳'],['anthropic','✳'],['gemini','✦'],['google','✦'],['deepseek','◈'],['qwen','Q'],['通义','Q'],['硅基','S'],['groq','G'],['mistral','M'],['ollama','◉']];
+ const hit=presets.find(([k])=>n.toLowerCase().includes(k.toLowerCase()));
+ return hit?hit[1]:esc((n.match(/[A-Za-z0-9\u4e00-\u9fff]/)||['A'])[0].toUpperCase());
+}
+function apiCard(r,scope='list'){
+ const id=esc(r.id),domId=scope+'-'+id,models=Array.isArray(r.models)?r.models:[];
+ const keyHint=r.apiKey?(r.apiKey.length>8?r.apiKey.slice(0,3)+'••••••••': '••••••••'):'未填写';
+ const status=r.lastTestStatus==='ok'?'<span class="api-state state-ok"><i></i>连接成功</span>':r.lastTestStatus==='bad'?'<span class="api-state state-bad"><i></i>连接失败</span>':'<span class="api-state state-unknown"><i></i>尚未测试</span>';
+ return `<article class="api api-pro ${r.collapsed?'is-collapsed':''}" data-api-card-id="${id}">
+  <div class="api-pro-head">
+   <div class="provider-mark">${providerMark(r)}</div>
+   <div class="provider-info"><h3>${esc(r.name||'未命名 API')}</h3><div class="provider-meta">${r.category?`<span class="chip">${esc(r.category)}</span>`:''}${(r.tags||[]).slice(0,3).map(t=>`<span class="chip">#${esc(t)}</span>`).join('')}</div></div>
+   <div class="api-head-actions"><button class="collapse-quick" data-act="collapse" data-id="${id}" aria-expanded="${!r.collapsed}">${r.collapsed?'展开':'收起'}</button><button class="edit-quick" data-act="edit" data-id="${id}" aria-label="编辑 ${esc(r.name)}">编辑</button></div>
+  </div>
+  <div class="api-pro-body">
+  <div class="api-summary">${status}<span class="meta-dot">·</span><span>${models.length} 个模型</span><span class="meta-dot">·</span><span class="key-state">${r.apiKey?'密钥已保存':'未填写密钥'}</span></div>
+  <div class="api-detail"><div class="detail-label">API BASE URL</div><div class="endpoint endpoint-pro">${esc(r.baseUrl||'未填写地址')}</div><button class="icon-action" data-act="copyurl" data-id="${id}" aria-label="复制 URL">复制地址</button></div>
+  <div class="api-detail key-detail"><div class="detail-label">API KEY</div><div class="key-display"><input readonly type="password" id="key-${domId}" value="${esc(r.apiKey||'')}" placeholder="未填写密钥" aria-label="API Key" autocomplete="off"><button class="icon-action" data-act="show" data-id="${id}">显示</button></div><button class="icon-action" data-act="copykey" data-id="${id}">显示并复制密钥</button></div>
+  <div class="api-detail checkin-config"><div class="detail-label">签到链接（整条 API 配置）</div><label style="display:flex;align-items:center;gap:8px;margin:8px 0;color:var(--text);font-size:13px"><input type="checkbox" data-api-checkin-toggle data-id="${id}" ${r.checkinEnabled?'checked':''} style="width:auto">为此 API 配置附加签到链接</label><input type="url" data-api-checkin-url data-id="${id}" value="${esc(r.checkinUrl||'')}" placeholder="https://example.com/check-in" aria-label="${esc(r.name||'API')} 签到网址"><div class="row" style="margin-top:8px"><button type="button" data-api-checkin-open data-id="${id}" ${!(r.checkinEnabled&&/^https?:\/\//i.test(r.checkinUrl||''))?'disabled':''}>打开签到页</button></div><div class="tiny muted">此链接属于整条 API 配置，与下方模型无关；设置会自动保存在本机。</div></div>
+  <div class="api-actions"><button class="primary-action" data-act="test" data-id="${id}">测试连接</button><button data-act="models" data-id="${id}">拉取模型</button><button data-act="favorite" data-id="${id}">${r.favorite?'★ 已收藏':'☆ 收藏'}</button><button data-act="duplicate" data-id="${id}">复制配置</button><button data-act="edit" data-id="${id}">编辑</button><button data-act="up" data-id="${id}">上移</button><button data-act="down" data-id="${id}">下移</button><button class="danger" data-act="delete" data-id="${id}">删除</button></div>
+  <div class="tiny muted api-extra">默认模型：${esc(r.model||'未设置')} ${r.notes?` · ${esc(r.notes)}`:''}</div>
+  <div id="result-${domId}" class="status hidden"></div>
+  <details class="model-tools" id="model-tools-${domId}">
+   <summary>已拉取模型（${models.length}）· 点击展开/折叠</summary>
+   <div id="models-${domId}" class="model-grid"></div>
+  </details>
+  </div>
+ </article>`;
+}
+function renderList(){let q=($('search')?.value||'').toLowerCase().trim(),filter=categoryView||$('filter')?.value||'';let fs=$('filter');if(fs){let old=fs.value;fs.innerHTML='<option value=\"\">全部分类</option>'+cats().map(c=>`<option value=\"${esc(c)}\">${esc(c)}</option>`).join('');fs.value=cats().includes(old)?old:'';if(categoryView)fs.value=categoryView}const shown=records.filter(r=>(!filter||r.category===filter)&&[r.name,r.category,r.baseUrl,r.model,(r.tags||[]).join(' '),r.notes].join(' ').toLowerCase().includes(q));$('apiList').innerHTML=shown.length?shown.map(r=>apiCard(r,'list')).join(''):'<div class=\"empty\">没有找到记录。点击「添加 API」创建第一条。</div>';shown.forEach(r=>{const c=$('models-list-'+r.id);if(c)renderModelCards(c,r,r.models||[])})}
+function renderRecent(){const recent=records.slice().sort((a,b)=>(b.updated||'').localeCompare(a.updated||'')).slice(0,3);$('recentList').innerHTML=records.length?recent.map(r=>apiCard(r,'recent')).join(''):'<div class="empty">还没有 API 记录，点击右上角添加。</div>';recent.forEach(r=>{const c=$('models-recent-'+r.id);if(c)renderModelCards(c,r,r.models||[])})}
+$('search').oninput=renderList;$('filter').onchange=()=>{categoryView=null;renderList()};
+function renderBookmarks(){
+ const q=($('bookmarkSearch')?.value||'').trim().toLowerCase();
+ const list=$('bookmarkList');if(!list)return;
+ const cats=[...new Set(bookmarks.map(b=>(b.category||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+ const fs=$('bookmarkCategoryFilter');if(fs){const old=fs.value;fs.innerHTML='<option value="">全部网址分类</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');fs.value=cats.includes(old)?old:'';}
+ const filter=fs?.value||'';
+ const shown=bookmarks.filter(b=>(!filter||(b.category||'')===filter)&&[b.name,b.url,b.category,b.notes].join(' ').toLowerCase().includes(q));
+ $('bookmarkSummary').textContent=bookmarks.length+' 个网址 · '+cats.length+' 个分类';
+ const groups={};shown.forEach(b=>{const c=(b.category||'').trim()||'未分类';(groups[c]||(groups[c]=[])).push(b)});
+ const card=b=>`<details class="card bookmark-card" style="margin-top:10px" data-bookmark-id="${esc(b.id)}"><summary class="bookmark-summary"><span class="bookmark-summary-title">${esc(b.name)}</span><span class="muted tiny">${esc((b.category||'未分类').trim()||'未分类')}</span><span class="bookmark-quick-actions"><button type="button" class="primary-action" data-bookmark-act="open" data-id="${esc(b.id)}">跳转</button><button type="button" data-bookmark-act="copy" data-id="${esc(b.id)}">复制</button></span></summary><div class="bookmark-content"><div class="endpoint endpoint-pro" style="overflow-wrap:anywhere"><a href="${esc(b.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:underline;overflow-wrap:anywhere">${esc(b.url)}</a></div>${b.notes?`<p class="muted" style="white-space:pre-wrap;overflow-wrap:anywhere;margin:10px 0">${esc(b.notes)}</p>`:'<p class="muted tiny" style="margin:10px 0">暂无备注</p>'}<div class="api-actions" style="margin-top:10px"><button class="primary-action" data-bookmark-act="open" data-id="${esc(b.id)}">一键跳转</button><button data-bookmark-act="copy" data-id="${esc(b.id)}">复制网址</button><button data-bookmark-act="edit" data-id="${esc(b.id)}">编辑</button><button data-bookmark-act="up" data-id="${esc(b.id)}">上移</button><button data-bookmark-act="down" data-id="${esc(b.id)}">下移</button><button class="danger" data-bookmark-act="delete" data-id="${esc(b.id)}">删除</button></div></div></details>`;
+ list.innerHTML=shown.length?Object.entries(groups).map(([c,items])=>`<details class="bookmark-group" open style="margin-top:12px"><summary style="cursor:pointer;font-weight:700;padding:10px 2px">${esc(c)} <span class="muted tiny">${items.length} 个网址</span></summary>${items.map(card).join('')}</details>`).join(''):'<div class="empty">'+(bookmarks.length?'没有找到匹配的网址。':'还没有收藏网址。请点击右下角「＋」添加。')+'</div>';
+}
+function resetBookmarkForm(){ $('bookmarkForm').reset();$('bookmarkId').value='';$('bookmarkSaveBtn').textContent='保存网址';$('bookmarkCancel').classList.add('hidden');if($('bookmarkAddPanel'))$('bookmarkAddPanel').open=false; }
+$('bookmarkForm').onsubmit=async e=>{e.preventDefault();const id=$('bookmarkId').value||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now())+Math.random());const url=$('bookmarkUrl').value.trim();if(!/^https?:\/\//i.test(url)){alert('网址必须以 http:// 或 https:// 开头。');return}const old=bookmarks.find(x=>x.id===id);const b={id,name:$('bookmarkName').value.trim(),url,category:$('bookmarkCategory').value.trim(),notes:$('bookmarkNotes').value.trim(),created:old?.created||new Date().toISOString(),updated:new Date().toISOString()};if(old)bookmarks=bookmarks.map(x=>x.id===id?b:x);else bookmarks.unshift(b);try{await saveBookmarks();resetBookmarkForm();closeAddModal();renderNav();renderBookmarks()}catch(err){alert(err.message)}};
+$('bookmarkCancel').onclick=resetBookmarkForm;$('bookmarkSearch').oninput=renderBookmarks;$('bookmarkCategoryFilter').onchange=renderBookmarks;
+document.addEventListener('click',async e=>{const b=e.target.closest('button[data-bookmark-act]');if(!b)return;e.preventDefault();e.stopPropagation();const item=bookmarks.find(x=>String(x.id)===String(b.dataset.id));if(!item)return;const act=b.dataset.bookmarkAct;if(act==='up'||act==='down'){const i=bookmarks.findIndex(x=>String(x.id)===String(item.id)),j=act==='up'?i-1:i+1;if(j>=0&&j<bookmarks.length){[bookmarks[i],bookmarks[j]]=[bookmarks[j],bookmarks[i]];await saveBookmarks();renderBookmarks()}return}else if(act==='open'){if(!/^https?:\/\//i.test(item.url)){alert('网址无效，请先编辑。');return}window.open(item.url,'_blank','noopener,noreferrer')}else if(act==='copy'){const ok=await copyText(item.url);const old=b.textContent;b.textContent=ok?'已复制':'复制失败';setTimeout(()=>b.textContent=old,1200)}else if(act==='edit'){$('bookmarkAddPanel').open=true;$('bookmarkId').value=item.id;$('bookmarkName').value=item.name;$('bookmarkUrl').value=item.url;$('bookmarkNotes').value=item.notes||'';$('bookmarkCategory').value=item.category||'';$('bookmarkSaveBtn').textContent='保存修改';$('bookmarkCancel').classList.remove('hidden');$('bookmarkName').focus({preventScroll:true})}else if(act==='delete'&&confirm('确定删除收藏网址「'+item.name+'」吗？')){bookmarks=bookmarks.filter(x=>x.id!==item.id);await saveBookmarks();renderNav();renderBookmarks()}});
+
+function resetForm(){$('apiForm').reset();$('recordId').value='';$('formTitle').textContent='添加 API';$('cancelEdit').classList.add('hidden');$('formStatus').classList.add('hidden');$('formModels').innerHTML=''}
+$('cancelEdit').onclick=()=>{resetForm();go('all')};
+function readForm(){return{id:$('recordId').value||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now())+Math.random()),name:$('name').value.trim(),category:$('category').value.trim(),baseUrl:$('baseUrl').value.trim().replace(/\/+$/,''),apiKey:$('apiKey').value.trim(),model:$('model').value.trim(),tags:$('tags').value.split(/[,，]/).map(x=>x.trim()).filter(Boolean),notes:$('notes').value.trim(),models:[],created:new Date().toISOString(),updated:new Date().toISOString()}}
+$('apiForm').onsubmit=async e=>{e.preventDefault();let r=readForm(),old=records.find(x=>x.id===r.id);if(old){r.created=old.created;r.models=old.models||[];r.modelStats=old.modelStats||{};r.lastTestStatus=old.lastTestStatus;r.lastTestAt=old.lastTestAt;r.favorite=!!old.favorite;r.icon=old.icon||'';records=records.map(x=>x.id===r.id?r:x)}else records.unshift(r);try{await save();renderAll();resetForm();go('all')}catch(e){alert('保存失败：'+e.message)}};
+async function copyText(s){try{await navigator.clipboard.writeText(s);return true}catch{let t=document.createElement('textarea');t.value=s;document.body.append(t);t.select();let ok=document.execCommand('copy');t.remove();return ok}}
+function endpoint(r){
+ let base=String(r.baseUrl||'').trim().replace(/\/+$/,'');
+ if(!base)throw Error('请填写 API Base URL。');
+ if(!/^https?:\/\//i.test(base))throw Error('API URL 必须以 http:// 或 https:// 开头。');
+ // Accept either a base URL (/v1) or a direct /models endpoint.
+ if(/\/models$/i.test(base))return base;
+ return base+'/models';
+}
+async function requestModels(r){if(!r.baseUrl||!r.apiKey)throw Error('请先填写 API URL 和密钥');let url=endpoint(r);let res;try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),15000);try{res=await fetch(url,{method:'GET',headers:{'Authorization':'Bearer '+r.apiKey,'Accept':'application/json'},signal:controller.signal})}finally{clearTimeout(timer)}}catch(e){throw Error((e.name==='AbortError'?'请求超时（15 秒）。':'请求失败或浏览器跨域拦截（CORS）。')+'请检查 URL、网络，以及服务商是否允许浏览器跨域访问（CORS）。浏览器可能会隐藏具体原因。原始信息：'+e.message)}let txt=await res.text();let data;try{data=JSON.parse(txt)}catch{data={message:txt.slice(0,500)}}if(!res.ok)throw Error('HTTP '+res.status+'：'+(data.error?.message||data.message||res.statusText||'请求失败')+(res.status===401?'。请检查 API Key。':res.status===403?'。可能没有权限或被服务商拦截。':res.status===404?'。请检查 Base URL 是否包含正确的 /v1 路径。':''));
+let arr=Array.isArray(data.data)?data.data:Array.isArray(data.models)?data.models:null;
+if(!arr){const detail=typeof data.message==='string'?data.message:(typeof data.error==='string'?data.error:'');throw Error('接口返回成功，但响应中未找到 data[] 或 models[] 模型列表。请确认这是兼容 OpenAI 的 /models 接口。'+(detail?' 服务端信息：'+detail:''))}return arr.map(m=>typeof m==='string'?m:m.id||m.name).filter(Boolean)}
+
+function chatEndpoint(r){
+ let base=String(r.baseUrl||'').trim().replace(/\/+$/,'');
+ if(!base)throw Error('请填写 API Base URL。');
+ if(!/^https?:\/\//i.test(base))throw Error('API URL 必须以 http:// 或 https:// 开头。');
+ if(/\/chat\/completions$/i.test(base))return base;
+ if(/\/models$/i.test(base))base=base.replace(/\/models$/i,'');
+ return base+'/chat/completions';
+}
+function renderModelCards(container,r,models){
+ if(!container)return;
+ container.innerHTML='';
+ const details=container.closest('details');const summary=details?.querySelector('summary');if(summary)summary.textContent='已拉取模型（'+models.length+'）· 点击展开/折叠';
+ models.forEach(name=>{
+  const row=document.createElement('div');row.className='model-row';
+  const top=document.createElement('div');top.className='model-row-top';
+  const nm=document.createElement('div');nm.className='model-name';nm.textContent=name;
+  const state=document.createElement('span');state.className='model-state good';state.textContent='已拉取';
+  top.append(nm,state);row.append(top);container.append(row);
+ });
+}
+async function testOne(r,box){say(box,'正在请求 '+endpoint(r)+' …','warn');try{let models=await requestModels(r);say(box,'连接成功！HTTP 模型列表接口可用，获取到 '+models.length+' 个模型。注意：这不代表聊天生成接口一定可用。','ok');return models}catch(e){say(box,'连接失败：'+e.message,'bad');return null}}
+function renderModels(container,models,onPick){container.innerHTML='';models.slice(0,100).forEach(m=>{let b=document.createElement('button');b.textContent=m;b.title='点击设为默认模型';b.onclick=()=>onPick(m);container.append(b)});if(models.length>100){let s=document.createElement('span');s.className='tiny muted';s.textContent='仅显示前 100 个';container.append(s)}}
+async function formTest(fetchOnly){let r=readForm();if(!r.baseUrl||!r.apiKey){say($('formStatus'),'请先填写 API URL 和密钥。','bad');return}let models=await testOne(r,$('formStatus'));if(models){r.models=models;renderModels($('formModels'),models,m=>$('model').value=m);if(fetchOnly)say($('formStatus'),'拉取成功，共 '+models.length+' 个模型。点击模型名称可填入默认模型。','ok')}}
+$('testForm').onclick=()=>formTest(false);$('fetchForm').onclick=()=>formTest(true);
+document.addEventListener('change',async e=>{
+ const toggle=e.target.closest('input[data-api-checkin-toggle]');
+ const urlInput=e.target.closest('input[data-api-checkin-url]');
+ if(!toggle&&!urlInput)return;
+ const el=toggle||urlInput;const r=records.find(x=>String(x.id)===String(el.dataset.id));if(!r)return;
+ if(toggle)r.checkinEnabled=toggle.checked;
+ if(urlInput)r.checkinUrl=urlInput.value.trim();
+ try{await save();
+  const card=el.closest('.api');const url=String(r.checkinUrl||'').trim();
+  const open=card?.querySelector('button[data-api-checkin-open]');
+  if(open)open.disabled=!(r.checkinEnabled&&/^https?:\/\//i.test(url));
+ }catch(err){alert('保存签到设置失败：'+err.message)}
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button[data-api-checkin-open]');if(!b)return;
+ const r=records.find(x=>String(x.id)===String(b.dataset.id));if(!r)return;
+ const url=String(r.checkinUrl||'').trim();
+ if(!r.checkinEnabled){alert('请先勾选“为此 API 配置附加签到链接”。');return}
+ if(!/^https?:\/\//i.test(url)){alert('请填写有效的 http:// 或 https:// 签到网址。');return}
+ window.open(url,'_blank','noopener,noreferrer');
+});
+document.addEventListener('click',async e=>{let b=e.target.closest('button[data-act]');if(!b)return;let r=records.find(x=>x.id===b.dataset.id);if(!r)return;let card=b.closest('.api'),box=card?.querySelector('.status'),modelBox=card?.querySelector('.model-grid'),keyInput=card?.querySelector('input[aria-label="API Key"]'),act=b.dataset.act;
+if(act==='collapse'){r.collapsed=!r.collapsed;await save();renderAll();return}
+if(act==='up'||act==='down'){const i=records.findIndex(x=>String(x.id)===String(r.id)),j=act==='up'?i-1:i+1;if(j>=0&&j<records.length){[records[i],records[j]]=[records[j],records[i]];await save();renderAll()}return}
+if(act==='show'){let i=keyInput;if(i){i.type=i.type==='password'?'text':'password';b.textContent=i.type==='password'?'显示':'隐藏'}}
+if(act==='copykey'){const i=keyInput;if(i)i.type='text';b.textContent='正在复制…';const ok=await copyText(r.apiKey);b.textContent=ok?'已复制':'复制失败';setTimeout(()=>{if(i)i.type='password';b.textContent='显示并复制密钥'},1200)}
+if(act==='copyurl'){b.textContent=await copyText(r.baseUrl)?'已复制':'复制失败';setTimeout(()=>b.textContent='复制 URL',1000)}
+if(act==='favorite'){r.favorite=!r.favorite;await save();renderAll();return}
+if(act==='duplicate'){const copy={...r,id:((crypto.randomUUID&&crypto.randomUUID())||String(Date.now())+Math.random()),name:(r.name||'API')+'（副本）',created:new Date().toISOString(),updated:new Date().toISOString(),lastTestStatus:undefined,lastTestAt:undefined,favorite:false,models:[...(r.models||[])],modelStats:JSON.parse(JSON.stringify(r.modelStats||{}))};records.unshift(copy);await save();renderAll();say($('formStatus'),'配置已复制。请检查名称、地址和密钥后再使用。','ok');return}
+if(act==='edit'){resetForm();$('recordId').value=r.id;for(let k of ['name','category','baseUrl','apiKey','model','notes'])$(k).value=r[k]||'';$('tags').value=(r.tags||[]).join(', ');$('formTitle').textContent='编辑 API';$('cancelEdit').classList.remove('hidden');go('add');$('name').focus()}
+if(act==='delete'&&confirm('确定删除「'+r.name+'」吗？')){records=records.filter(x=>x.id!==r.id);await save();renderAll()}
+if(act==='test'||act==='models'){
+ b.disabled=true;const oldText=b.textContent;b.textContent='请求中…';
+ try{
+  if(!r.baseUrl||!r.apiKey)throw Error('请先编辑并填写 API URL 和密钥。');
+  let ms=await testOne(r,box);
+  r.lastTestStatus=ms?'ok':'bad';r.lastTestAt=new Date().toISOString();
+  if(ms){r.models=ms;renderModelCards(modelBox,r,ms);}
+  await save();renderStats();
+ }catch(err){if(box)say(box,'操作失败：'+(err.message||err),'bad');}
+ finally{b.disabled=false;b.textContent=oldText;}
+}
+});
+
+
+function resetRoleForm(){ $('roleForm').reset();$('roleId').value='';$('roleCoverData').value='';$('roleSaveBtn').textContent='保存角色卡';$('roleCancel').classList.add('hidden');if($('roleAddPanel'))$('roleAddPanel').open=false;}
+$('roleFile').onchange=async e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;try{if(f.size>8*1024*1024)throw Error('角色卡 JSON/TXT 超过 8 MB，请确认文件大小或拆分内容。');const text=await f.text();$('roleRaw').value=text;if(!$('roleTitle').value.trim()){let title='';try{const j=JSON.parse(text);title=j.name||j.char_name||j.data?.name||j.character?.name||'';}catch{}$('roleTitle').value=title||f.name.replace(/\.(json|txt)$/i,'')} }catch(err){alert('读取文件失败：'+err.message)}};
+function decodePngText(bytes){
+ const parts=[];for(let i=0;i<bytes.length;i+=8192)parts.push(String.fromCharCode(...bytes.subarray(i,Math.min(i+8192,bytes.length))));return parts.join('');
+}
+async function extractSillyTavernPng(file){
+ const buf=await file.arrayBuffer(),b=new Uint8Array(buf);if(b.length<8||b[0]!==137||b[1]!==80||b[2]!==78||b[3]!==71)throw Error('所选文件不是有效的 PNG。');
+ let pos=8,found=[];
+ while(pos+12<=b.length){const len=(b[pos]*16777216)+(b[pos+1]<<16)+(b[pos+2]<<8)+b[pos+3];if(len<0||pos+12+len>b.length)break;const type=String.fromCharCode(...b.subarray(pos+4,pos+8));const d=b.subarray(pos+8,pos+8+len);
+  if(type==='tEXt'){let z=d.indexOf(0);if(z>=0){const key=decodePngText(d.subarray(0,z));if(['chara','ccv3','character'].includes(key.toLowerCase()))found.push({key,text:decodePngText(d.subarray(z+1))});}}
+  else if(type==='iTXt'){let z=d.indexOf(0);if(z>=0){const key=decodePngText(d.subarray(0,z));if(['chara','ccv3','character'].includes(key.toLowerCase())){let q=z+1;if(q+2<d.length){const compressed=d[q];q+=2;const langEnd=d.indexOf(0,q);if(langEnd>=0){q=langEnd+1;const transEnd=d.indexOf(0,q);if(transEnd>=0){q=transEnd+1;let txt=decodePngText(d.subarray(q));if(compressed)throw Error('PNG 角色数据使用了压缩的 iTXt 元数据，暂不支持该压缩形式。');found.push({key,text:txt});}}}}}}
+  pos+=12+len;if(type==='IEND')break;
+ }
+ if(!found.length)throw Error('没有找到酒馆角色卡元数据（chara / ccv3）。请确认这是包含角色卡数据的 SillyTavern PNG，而不只是普通图片。');
+ for(const item of found){let candidates=[item.text];try{candidates.unshift(decodeURIComponent(escape(atob(item.text.trim()))))}catch{}try{candidates.unshift(new TextDecoder().decode(Uint8Array.from(atob(item.text.trim()),c=>c.charCodeAt(0))))}catch{}for(const c of candidates){try{const j=JSON.parse(c);if(j&&typeof j==='object')return j}catch{}}}
+ throw Error('已找到角色卡元数据，但无法将其解析为 JSON。');
+}
+async function makeRoleThumbnail(file){try{return await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=()=>reject(new Error('读取原始图片失败'));r.readAsDataURL(file)})}catch{return ''}}
+$('rolePngFile').onchange=async e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;const input=$('rolePngFile');input.disabled=true;try{const j=await extractSillyTavernPng(f);const normalized=j.data&&typeof j.data==='object'?j.data:j;const title=j.name||j.data?.name||j.char_name||normalized.name||f.name.replace(/\.png$/i,'');$('roleRaw').value=JSON.stringify(j,null,2);if(!$('roleTitle').value.trim())$('roleTitle').value=title;if(!$('roleNotes').value.trim())$('roleNotes').value=j.description||j.data?.description||'';const thumb=await makeRoleThumbnail(f);if(thumb)$('roleCoverData').value=thumb;alert('酒馆 PNG 角色卡导入成功！已提取角色 JSON'+(thumb?'，并生成封面缩略图。':'。')+'请检查标题与原始内容后点击「保存角色卡」。')}catch(err){alert('PNG 角色卡导入失败：'+(err.message||err))}finally{input.disabled=false}};
+$('roleCoverFile').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{$('roleCoverData').value=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=reject;r.readAsDataURL(f)})}catch(err){alert('读取原始封面失败：'+err.message)}};
+function renderRoles(){const list=$('roleList');if(!list)return;const q=($('roleSearch')?.value||'').trim().toLowerCase();const cats=[...new Set(roleCards.map(r=>(r.category||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN'));const fs=$('roleCategoryFilter');if(fs){const old=fs.value;fs.innerHTML='<option value="">全部分类</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');fs.value=cats.includes(old)?old:'';}const filter=fs?.value||'';const shown=roleCards.filter(r=>(!filter||(r.category||'')===filter)&&[r.title,r.category,(r.tags||[]).join(' '),r.source,r.notes,r.raw].join(' ').toLowerCase().includes(q));$('roleSummary').textContent=roleCards.length+' 张角色卡 · '+cats.length+' 个分类';const groups={};shown.forEach(r=>{const c=(r.category||'').trim()||'未分类';(groups[c]||(groups[c]=[])).push(r)});const tile=r=>`<details class="role-card"><summary>${esc(r.title||'未命名角色卡')}</summary><div class="role-meta">${esc((r.category||'未分类')+' · '+((r.tags||[]).join(', ')||'无标签'))}</div><div class="role-card-body">${r.cover?`<img class="role-cover" src="${esc(r.cover)}" alt="${esc(r.title)} 封面">`:''}${r.notes?`<details class="fold-data" style="margin:8px 0"><summary>角色简介 / 备注（展开查看）</summary><p class="muted" style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(r.notes)}</p></details>`:''}${r.source?`<p><a href="${esc(r.source)}" target="_blank" rel="noopener noreferrer">打开来源网址</a></p>`:''}<details class="fold-data" style="margin:8px 0"><summary>角色原始数据（展开查看）</summary><div class="role-raw">${esc(String(r.raw||'').slice(0,4000))}${String(r.raw||'').length>4000?'\n……（预览最多显示 4000 字符）':''}</div><div class="muted tiny">这里仅显示前 4000 字符预览；完整内容可通过「复制原文」或「导出 JSON」获取。</div></details><div class="role-actions"><button data-role-act="copy" data-id="${esc(r.id)}">复制原文</button><button data-role-act="export" data-id="${esc(r.id)}">导出 JSON</button><button data-role-act="edit" data-id="${esc(r.id)}">编辑</button><button data-role-act="up" data-id="${esc(r.id)}">上移</button><button data-role-act="down" data-id="${esc(r.id)}">下移</button><button class="danger" data-role-act="delete" data-id="${esc(r.id)}">删除</button></div></div></details>`;list.innerHTML=shown.length?Object.entries(groups).map(([c,items])=>`<details class="bookmark-group" open style="margin-top:12px"><summary style="cursor:pointer;font-weight:700;padding:10px 2px">${esc(c)} <span class="muted tiny">${items.length} 张角色卡</span></summary><div class="role-grid">${items.map(tile).join('')}</div></details>`).join(''):'<div class="empty">'+(roleCards.length?'没有找到匹配的角色卡。':'还没有角色卡。点击右下角「＋」添加。')+'</div>';}
+$('roleForm').onsubmit=async e=>{e.preventDefault();const id=$('roleId').value||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now())+Math.random());const old=roleCards.find(r=>String(r.id)===String(id));const raw=$('roleRaw').value;if(!raw.trim()){alert('请填写角色卡原始内容。');return}if($('roleSource').value.trim()&&!/^https?:\/\//i.test($('roleSource').value.trim())){alert('来源网址必须以 http:// 或 https:// 开头。');return}const item={id,title:$('roleTitle').value.trim(),category:$('roleCategory').value.trim(),tags:$('roleTags').value.split(',').map(x=>x.trim()).filter(Boolean),source:$('roleSource').value.trim(),notes:$('roleNotes').value.trim(),raw,cover:$('roleCoverData').value||(old?.cover||''),created:old?.created||new Date().toISOString(),updated:new Date().toISOString()};if(!item.title){alert('请填写角色名称。');return}if(old)roleCards=roleCards.map(r=>String(r.id)===String(id)?item:r);else roleCards.unshift(item);try{await saveRoles();resetRoleForm();closeAddModal();renderNav();renderRoles();if(currentView==='search')renderGlobalSearch()}catch(err){alert(err.message)}};
+$('roleCancel').onclick=resetRoleForm;$('roleSearch').oninput=renderRoles;$('roleCategoryFilter').onchange=renderRoles;
+document.addEventListener('click',async e=>{const b=e.target.closest('button[data-role-act]');if(!b)return;e.preventDefault();e.stopPropagation();const item=roleCards.find(r=>String(r.id)===String(b.dataset.id));if(!item)return;const act=b.dataset.roleAct;if(act==='copy'){const ok=await copyText(item.raw||'');const old=b.textContent;b.textContent=ok?'已复制':'复制失败';setTimeout(()=>b.textContent=old,1200)}else if(act==='export'){const blob=new Blob([JSON.stringify({format:'apihub-role-card',version:1,...item},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=(item.title||'role-card').replace(/[^\w\-\u4e00-\u9fff]+/g,'_')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}else if(act==='edit'){$('roleAddPanel').open=true;$('roleId').value=item.id;$('roleTitle').value=item.title||'';$('roleCategory').value=item.category||'';$('roleTags').value=(item.tags||[]).join(', ');$('roleSource').value=item.source||'';$('roleNotes').value=item.notes||'';$('roleRaw').value=item.raw||'';$('roleCoverData').value=item.cover||'';$('roleSaveBtn').textContent='保存修改';$('roleCancel').classList.remove('hidden');$('roleTitle').focus({preventScroll:true})}else if(act==='up'||act==='down'){const i=roleCards.findIndex(r=>String(r.id)===String(item.id)),j=act==='up'?i-1:i+1;if(j>=0&&j<roleCards.length){[roleCards[i],roleCards[j]]=[roleCards[j],roleCards[i]];await saveRoles();renderRoles()}}else if(act==='delete'&&confirm('确定删除角色卡「'+item.title+'」吗？')){roleCards=roleCards.filter(r=>String(r.id)!==String(item.id));await saveRoles();renderNav();renderRoles()}});
+
+
+const libraryTypeNames={worldbook:'世界书 / 设定',prompt:'AI 提示词',preset:'生成预设 / 参数',story:'剧情片段 / 开场白',code:'代码片段',note:'笔记 / 灵感',asset:'素材链接 / 资源','tavern-ui':'CSS 文件', 'preview-image':'预览图片','phone-style':'小手机美化','bubble-style':'手机气泡'};
+function resetLibraryForm(){ $('libraryForm').reset();$('libraryId').value='';$('libraryType').value=currentLibraryType||'worldbook';if($('libraryCharacter'))$('libraryCharacter').value='';if($('storyTemplate'))$('storyTemplate').value='plain';$('librarySaveBtn').textContent='保存';$('libraryCancel').classList.add('hidden');if($('libraryAddPanel')){$('libraryAddPanel').open=false;$('libraryAddPanel').style.display='none'}syncLibraryTypeLock();}
+function syncLibraryTypeLock(){const t=currentLibraryType||'';const wrap=$('libraryTypeSelectWrap'),lock=$('libraryTypeLock');if(wrap)wrap.style.display=t?'none':'';if(lock)lock.style.display=t?'block':'none';if($('libraryTypeLockName'))$('libraryTypeLockName').textContent=libraryTypeNames[t]||t; if(t)$('libraryType').value=t;const st=$('storyTemplateWrap');if(st)st.style.display=t==='story'?'block':'none';}
+$('libraryType')?.addEventListener('change',()=>{if(!currentLibraryType){const st=$('storyTemplateWrap');if(st)st.style.display=$('libraryType').value==='story'?'block':'none';}});
+$('libraryFile').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{let type=currentLibraryType||$('libraryType').value||'worldbook';if(/^image\//i.test(f.type)){type=['phone-style','bubble-style','preview-image'].includes(type)?type:'preview-image';const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=()=>reject(Error('图片读取失败'));r.readAsDataURL(f)});$('libraryContent').value=data;}else{$('libraryContent').value=await f.text();if(/\.css$/i.test(f.name))type=(type==='phone-style'||type==='bubble-style')?type:'tavern-ui';else if(/\.json$/i.test(f.name)&&!currentLibraryType)type='worldbook';}if(!currentLibraryType)$('libraryType').value=type;if(!$('libraryTitle').value.trim())$('libraryTitle').value=f.name.replace(/\.[^.]+$/,'');syncLibraryTypeLock();}catch(err){alert('导入失败：'+err.message)}finally{e.target.value=''}};
+function renderLibrary(){const list=$('libraryList');if(!list)return;const q=($('librarySearch')?.value||'').trim().toLowerCase(),type=currentLibraryType||'worldbook';const roleSel=$('libraryCharacterFilter');const roleOld=roleSel?.value||'';const roleNames=[...new Set(libraryItems.map(x=>(x.character||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN'));if(roleSel){roleSel.innerHTML='<option value="">全部角色</option>'+roleNames.map(r=>`<option value="${esc(r)}">${esc(r)}</option>`).join('');roleSel.value=roleNames.includes(roleOld)?roleOld:'';}const selectedCharacter=roleSel?.value||'';const cats=[...new Set(libraryItems.filter(x=>x.type===type).map(x=>(x.category||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN'));const fs=$('libraryCategoryFilter');if(fs){const old=fs.value;fs.innerHTML='<option value="">全部分类</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');fs.value=cats.includes(old)?old:'';}const cat=fs?.value||'';const shown=libraryItems.filter(x=>(!type||x.type===type)&&(!cat||(x.category||'')===cat)&&(!selectedCharacter||(x.character||'')===selectedCharacter)&&[x.title,x.type,x.category,x.character,(x.tags||[]).join(' '),x.source,x.notes,x.content].join(' ').toLowerCase().includes(q));$('librarySummary').textContent=libraryItems.filter(x=>x.type===type).length+' 条';const groups={};shown.forEach(x=>{const c=(x.category||'').trim()||'未分类';(groups[c]||(groups[c]=[])).push(x)});const tile=x=>`<details class="library-card"><summary>${esc(x.title||'未命名素材')}</summary><div class="library-meta">${esc(libraryTypeNames[x.type]||'玩家素材')} · ${esc((x.category||'未分类')+' · '+((x.tags||[]).join(', ')||'无标签'))}${x.character?' · 角色：'+esc(x.character):''}</div><div class="library-body">${x.notes?`<p class="muted" style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(x.notes)}</p>`:''}${(['preview-image','phone-style','bubble-style'].includes(x.type))&&String(x.content||'').startsWith('data:image/')?`<img src="${x.content}" alt="${esc(x.title)}" loading="lazy" style="display:block;max-width:100%;max-height:360px;object-fit:contain;border-radius:12px;border:1px solid var(--line);margin:10px auto;background:var(--panel2)">`:''}${x.source?`<p><a href="${esc(x.source)}" target="_blank" rel="noopener noreferrer">打开来源 / 资源网址</a></p>`:''}${x.type==='story'&&x.template&&x.template!=='plain'?`<div class="library-story-paper story-theme-${esc(['postcard','letter','dialogue','sms','email','wedding','diary','ticket','poem'].includes(x.template)?x.template:'letter')}">${esc(String(x.content||'').slice(0,5000))}${String(x.content||'').length>5000?'\n……（展示最多 5000 字符）':''}</div>`:`<div class="library-content">${esc(String(x.content||'').slice(0,5000))}${String(x.content||'').length>5000?'\n……（预览最多显示 5000 字符）':''}</div>`}<div class="library-actions">${(['preview-image','phone-style','bubble-style'].includes(x.type))&&String(x.content||'').startsWith('data:image/')?`<button data-library-act="preview-image" data-id="${esc(x.id)}">查看图片</button>`:''}${x.type==='tavern-ui'?`<button data-library-act="preview-css" data-id="${esc(x.id)}">查看 CSS 文本</button>`:''}<button data-library-act="copy" data-id="${esc(x.id)}">一键复制</button><button data-library-act="export" data-id="${esc(x.id)}">导出 JSON</button><button data-library-act="edit" data-id="${esc(x.id)}">编辑</button><button data-library-act="up" data-id="${esc(x.id)}">上移</button><button data-library-act="down" data-id="${esc(x.id)}">下移</button><button class="danger" data-library-act="delete" data-id="${esc(x.id)}">删除</button></div></div></details>`;list.innerHTML=shown.length?Object.entries(groups).map(([c,items])=>`<details class="bookmark-group" open style="margin-top:12px"><summary style="cursor:pointer;font-weight:700;padding:10px 2px">${esc(c)} <span class="muted tiny">${items.length} 条</span></summary><div class="library-grid">${items.map(tile).join('')}</div></details>`).join(''):'<div class="empty">'+(libraryItems.length?'没有找到匹配的素材。':'还没有素材。点击右下角「＋」添加。')+'</div>';}
+$('libraryForm').onsubmit=async e=>{e.preventDefault();const id=$('libraryId').value||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now())+Math.random());const old=libraryItems.find(x=>String(x.id)===String(id));const source=$('librarySource').value.trim();if(source&&!/^https?:\/\//i.test(source)){alert('来源网址必须以 http:// 或 https:// 开头。');return}const chosenType=currentLibraryType||$('libraryType').value;const item={id,title:$('libraryTitle').value.trim(),type:chosenType,category:$('libraryCategory').value.trim(),tags:$('libraryTags').value.split(',').map(x=>x.trim()).filter(Boolean),source,notes:$('libraryNotes').value.trim(),character:$('libraryCharacter')?.value.trim()||'',template:chosenType==='story'?($('storyTemplate')?.value||old?.template||'plain'):'',content:$('libraryContent').value,created:old?.created||new Date().toISOString(),updated:new Date().toISOString()};if(!item.title||!item.content.trim()){alert('请填写标题和内容。');return}if(currentLibraryType&&old&&old.type!==currentLibraryType){alert('此独立目录只能编辑本类型内容，请返回原目录编辑。');return}if(old)libraryItems=libraryItems.map(x=>String(x.id)===String(id)?item:x);else libraryItems.unshift(item);try{await saveLibrary();resetLibraryForm();closeAddModal();syncLibraryTypeLock();renderNav();renderLibrary();if(currentView==='search')renderGlobalSearch()}catch(err){alert(err.message)}};
+$('libraryCancel').onclick=resetLibraryForm;$('libraryType').addEventListener('change',()=>{if(currentLibraryType)$('libraryType').value=currentLibraryType;syncLibraryTypeLock()});$('librarySearch').oninput=renderLibrary;
+function setLibraryType(type){currentLibraryType=type||'worldbook';if($('libraryTypeFilter'))$('libraryTypeFilter').value=type||'worldbook';syncLibraryTypeLock();if(!$('libraryId').value)$('libraryType').value=type||'worldbook';renderLibrary();document.querySelectorAll('[data-library-tab]').forEach(b=>b.classList.toggle('active',(b.dataset.libraryTab||'')===(type||'')));const title=document.querySelector('#libraryAddPanel>summary');if(title)title.textContent='添加'+(libraryTypeNames[currentLibraryType]||currentLibraryType);const heading=$('libraryHeading');const directoryName=({worldbook:'世界书',preset:'酒馆预设',story:'剧情片段','tavern-ui':'CSS 文件','preview-image':'预览图片','phone-style':'小手机美化','bubble-style':'手机气泡'})[currentLibraryType]||'素材';if(heading)heading.textContent=directoryName;if(currentView==='library')$('pageTitle').textContent=directoryName;refreshFabMenu();}
+document.querySelectorAll('[data-library-tab]').forEach(b=>b.addEventListener('click',()=>{resetLibraryForm();setLibraryType(b.dataset.libraryTab||'worldbook');}));document.querySelectorAll('[data-library-shortcut]').forEach(b=>b.addEventListener('click',()=>{go('library');setLibraryType(b.dataset.libraryShortcut);$('libraryAddPanel').open=false;}));
+document.addEventListener('click',async e=>{const b=e.target.closest('button[data-library-act]');if(!b)return;e.preventDefault();e.stopPropagation();const item=libraryItems.find(x=>String(x.id)===String(b.dataset.id));if(!item)return;const act=b.dataset.libraryAct;if(act==='preview-css'){const css=String(item.content||'');const doc='<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;padding:18px;background:#17191e;color:#eee;font:14px/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}</style></head><body></body></html>';activeTheaterPreview={title:item.title+' · CSS 原文查看',content:doc,type:'html'};$('theaterStageTitle').textContent=activeTheaterPreview.title;$('theaterStageFrame').srcdoc=doc;$('theaterStage').classList.add('active');document.body.style.overflow='hidden';$('theaterStageFrame').onload=()=>{try{$('theaterStageFrame').contentDocument.body.textContent=css}catch{}};return;}else if(act==='preview-image'){if(!String(item.content||'').startsWith('data:image/')){alert('此条目没有可预览的图片，请重新上传图片。');return}const doc='<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(item.title)+'</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#17191e;color:#fff;font-family:system-ui;padding:12px;box-sizing:border-box}img{max-width:100%;max-height:92vh;object-fit:contain;border-radius:12px}</style></head><body><img src="'+item.content+'" alt="preview"></body></html>';activeTheaterPreview={title:item.title+' · 图片预览',content:doc,type:'html'};$('theaterStageTitle').textContent=activeTheaterPreview.title;$('theaterStageFrame').srcdoc=doc;$('theaterStage').classList.add('active');document.body.style.overflow='hidden';return;}else if(act==='copy'){const ok=await copyText(item.content||'');const old=b.textContent;b.textContent=ok?'已复制':'复制失败';setTimeout(()=>b.textContent=old,1200)}else if(act==='export'){const blob=new Blob([JSON.stringify({format:'apihub-player-material',version:1,...item},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=(item.title||'material').replace(/[^\w\-\u4e00-\u9fff]+/g,'_')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}else if(act==='edit'){if(currentLibraryType&&item.type!==currentLibraryType){alert('此目录只允许编辑本类型内容。');return}$('libraryAddPanel').style.display='block';$('libraryAddPanel').open=true;$('libraryId').value=item.id;$('libraryTitle').value=item.title||'';$('libraryType').value=item.type||'worldbook';syncLibraryTypeLock();$('libraryCategory').value=item.category||'';$('libraryTags').value=(item.tags||[]).join(', ');$('librarySource').value=item.source||'';$('libraryNotes').value=item.notes||'';if($('libraryCharacter'))$('libraryCharacter').value=item.character||'';if($('storyTemplate'))$('storyTemplate').value=item.template||'plain';$('libraryContent').value=item.content||'';$('librarySaveBtn').textContent='保存修改';$('libraryCancel').classList.remove('hidden');$('libraryTitle').focus({preventScroll:true})}else if(act==='up'||act==='down'){const i=libraryItems.findIndex(x=>String(x.id)===String(item.id)),j=act==='up'?i-1:i+1;if(j>=0&&j<libraryItems.length){[libraryItems[i],libraryItems[j]]=[libraryItems[j],libraryItems[i]];await saveLibrary();renderLibrary()}}else if(act==='delete'&&confirm('确定删除素材「'+item.title+'」吗？')){libraryItems=libraryItems.filter(x=>String(x.id)!==String(item.id));await saveLibrary();renderNav();renderLibrary()}});
+
+function resetTheaterForm(){ $('theaterForm').reset();$('theaterId').value='';$('theaterType').value='text';if($('theaterCharacter'))$('theaterCharacter').value='';$('theaterSaveBtn').textContent='保存小剧场';$('theaterCancel').classList.add('hidden');if($('theaterAddPanel'))$('theaterAddPanel').open=false; }
+function renderTheaters(){
+ const list=$('theaterList');if(!list)return;
+ const q=($('theaterSearch')?.value||'').trim().toLowerCase();const roleFilter=$('theaterCharacterFilter')?.value||'';const roles=[...new Set(theaters.map(t=>(t.character||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN'));const rf=$('theaterCharacterFilter');if(rf){const oldRole=rf.value;rf.innerHTML='<option value="">全部角色</option>'+roles.map(r=>`<option value="${esc(r)}">${esc(r)}</option>`).join('');rf.value=roles.includes(oldRole)?oldRole:'';}const selectedRole=rf?.value||'';
+ const cats=[...new Set(theaters.map(t=>(t.category||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN'));
+ const fs=$('theaterCategoryFilter');if(fs){const old=fs.value;fs.innerHTML='<option value="">全部分类</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');fs.value=cats.includes(old)?old:'';}
+ const filter=fs?.value||'';
+ const shown=theaters.filter(t=>(!filter||(t.category||'')===filter)&&(!selectedRole||(t.character||'')===selectedRole)&&[t.title,t.content,t.category,t.type,t.character].join(' ').toLowerCase().includes(q));
+ $('theaterSummary').textContent=theaters.length+' 个小剧场 · '+cats.length+' 个分类';
+ const groups={};shown.forEach(t=>{const c=(t.category||'').trim()||'未分类';(groups[c]||(groups[c]=[])).push(t)});
+ const tile=t=>`<details class="theater-tile" data-theater-card="${esc(t.id)}" ${t.type==='html'?'open':''}><summary>${esc(t.title||'未命名小剧场')}</summary><div class="theater-kind">${t.type==='html'?'HTML 小剧场 · 可预览':'文字小剧场'} · ${esc((t.category||'').trim()||'未分类')}${t.character?' · 角色：'+esc(t.character):''}</div>${t.type==='html'?`<iframe class="theater-preview" title="${esc(t.title)} 预览" sandbox="allow-scripts allow-forms allow-modals allow-pointer-lock allow-popups" referrerpolicy="no-referrer" srcdoc="${esc(t.content||'')}" loading="lazy"></iframe><button type="button" class="theater-zoom" data-theater-act="zoom" data-id="${esc(t.id)}">⛶ 放大预览 / 互动</button>`:`<div class="theater-tile-body"><div class="theater-text">${esc(t.content||'')}</div></div>`}<div class="theater-actions"><button data-theater-act="copy" data-id="${esc(t.id)}">一键复制</button><button data-theater-act="edit" data-id="${esc(t.id)}">编辑</button><button data-theater-act="up" data-id="${esc(t.id)}">上移</button><button data-theater-act="down" data-id="${esc(t.id)}">下移</button><button class="danger" data-theater-act="delete" data-id="${esc(t.id)}">删除</button></div></details>`;
+ list.innerHTML=shown.length?Object.entries(groups).map(([c,items])=>`<details class="bookmark-group" open style="margin-top:12px"><summary style="cursor:pointer;font-weight:700;padding:10px 2px">${esc(c)} <span class="muted tiny">${items.length} 个小剧场</span></summary><div class="theater-grid">${items.map(tile).join('')}</div></details>`).join(''):'<div class="empty">'+(theaters.length?'没有找到匹配的小剧场。':'还没有收藏小剧场。点击右下角「＋」添加。')+'</div>';
+}
+$('theaterForm').onsubmit=async e=>{e.preventDefault();const id=$('theaterId').value||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now())+Math.random());const old=theaters.find(t=>String(t.id)===String(id));const item={id,title:$('theaterTitle').value.trim(),category:$('theaterCategory').value.trim(),character:$('theaterCharacter')?.value.trim()||'',type:$('theaterType').value==='html'?'html':'text',content:$('theaterContent').value,created:old?.created||new Date().toISOString(),updated:new Date().toISOString()};if(!item.title||!item.content.trim()){alert('请填写标题和内容。');return}if(old)theaters=theaters.map(t=>String(t.id)===String(id)?item:t);else theaters.unshift(item);try{await saveTheaters();resetTheaterForm();closeAddModal();renderNav();renderTheaters()}catch(err){alert(err.message)}};
+$('theaterCancel').onclick=resetTheaterForm;$('theaterSearch').oninput=renderTheaters;$('theaterCategoryFilter').onchange=renderTheaters;$('theaterCharacterFilter')?.addEventListener('change',renderTheaters);
+let activeTheaterPreview=null;
+function openTheaterPreview(item){if(!item||item.type!=='html')return;activeTheaterPreview=item;$('theaterStageTitle').textContent=item.title||'HTML 小剧场预览';$('theaterStageFrame').srcdoc=item.content||'';$('theaterStage').classList.add('active');document.body.style.overflow='hidden';}
+function closeTheaterPreview(){ $('theaterStage').classList.remove('active');$('theaterStageFrame').srcdoc='';document.body.style.overflow='';activeTheaterPreview=null; }
+$('theaterStageClose').onclick=closeTheaterPreview;
+$('theaterStageReload').onclick=()=>{if(activeTheaterPreview)$('theaterStageFrame').srcdoc=activeTheaterPreview.content||'';};
+$('theaterStageCopy').onclick=async()=>{if(!activeTheaterPreview)return;const ok=await copyText(activeTheaterPreview.content||'');$('theaterStageCopy').textContent=ok?'已复制':'复制失败';setTimeout(()=>{if($('theaterStageCopy'))$('theaterStageCopy').textContent='复制 HTML'},1200)};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('theaterStage').classList.contains('active'))closeTheaterPreview()});
+document.addEventListener('click',async e=>{const b=e.target.closest('button[data-theater-act]');if(!b)return;e.preventDefault();e.stopPropagation();const item=theaters.find(t=>String(t.id)===String(b.dataset.id));if(!item)return;const act=b.dataset.theaterAct;if(act==='zoom'){openTheaterPreview(item);return;}if(act==='copy'){const ok=await copyText(item.content);const old=b.textContent;b.textContent=ok?'已复制':'复制失败';setTimeout(()=>b.textContent=old,1200)}else if(act==='edit'){$('theaterAddPanel').open=true;$('theaterId').value=item.id;$('theaterTitle').value=item.title;$('theaterCategory').value=item.category||'';if($('theaterCharacter'))$('theaterCharacter').value=item.character||'';$('theaterType').value=item.type||'text';$('theaterContent').value=item.content;$('theaterSaveBtn').textContent='保存修改';$('theaterCancel').classList.remove('hidden');$('theaterTitle').focus({preventScroll:true})}else if(act==='up'||act==='down'){const i=theaters.findIndex(t=>String(t.id)===String(item.id)),j=act==='up'?i-1:i+1;if(j>=0&&j<theaters.length){[theaters[i],theaters[j]]=[theaters[j],theaters[i]];await saveTheaters();renderTheaters()}}else if(act==='delete'&&confirm('确定删除小剧场「'+item.title+'」吗？')){theaters=theaters.filter(t=>String(t.id)!==String(item.id));await saveTheaters();renderNav();renderTheaters()}});
+
+// 每张素材/角色卡/小剧场/网址卡独立折叠：点击哪张只切换哪张，不联动其他卡片。
+document.addEventListener('click',e=>{
+ const summary=e.target.closest('summary');
+ if(!summary)return;
+ const itemCard=summary.parentElement;
+ if(!itemCard || !itemCard.matches('details.library-card, details.role-card, details.theater-tile, details.bookmark-card'))return;
+ e.preventDefault();e.stopPropagation();
+ itemCard.open=!itemCard.open;
+},true);
+
+$('exportBtn').onclick=exportFullBackup;
+$('importFile').onchange=async e=>{
+ const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+ try{
+  // 不主动压缩或按固定大小拒绝备份；实际可导入大小仍受设备内存和浏览器限制。
+  const p=JSON.parse(await f.text());
+  let incoming, incomingBookmarks=null, incomingTheaters=null, incomingRoleCards=null, incomingLibraryItems=null, incomingPrefs=null;
+  if(p&&p.format==='apihub-local-backup'&&Array.isArray(p.records)){
+   incoming=p.records;incomingBookmarks=Array.isArray(p.bookmarks)?p.bookmarks:null;incomingTheaters=Array.isArray(p.theaters)?p.theaters:null;incomingRoleCards=Array.isArray(p.roleCards)?p.roleCards:null;incomingLibraryItems=Array.isArray(p.libraryItems)?p.libraryItems:null;incomingPrefs=p.preferences&&typeof p.preferences==='object'?p.preferences:null;
+  }else if(p&&p.format==='apihub-encrypted-backup')throw Error('这是旧版加密备份，请用原版页面解密后再导出为新版 JSON。');
+  else if(Array.isArray(p))incoming=p;
+  else if(p&&typeof p==='object'&&Array.isArray(p.records))incoming=p.records;
+  else throw Error('无法识别此文件。全量恢复请选择 API Hub 备份 JSON；酒馆预设请在「世界书与素材库 → 酒馆预设」目录使用专用导入入口。');
+  if(!incoming.every(r=>r&&typeof r==='object'&&typeof r.name==='string'&&typeof r.baseUrl==='string'))throw Error('API 记录校验失败：每条记录都必须包含名称和 Base URL。未修改现有数据。');
+  incoming=incoming.map((r,i)=>({...r,id:String(r.id||('imported-'+Date.now()+'-'+i)),category:typeof r.category==='string'?r.category:'',apiKey:typeof r.apiKey==='string'?r.apiKey:'',model:typeof r.model==='string'?r.model:'',tags:Array.isArray(r.tags)?r.tags.filter(x=>typeof x==='string'):[],models:Array.isArray(r.models)?r.models.filter(x=>typeof x==='string'):[],modelStats:r.modelStats&&typeof r.modelStats==='object'?r.modelStats:{},notes:typeof r.notes==='string'?r.notes:'',updated:r.updated||new Date().toISOString()}));
+  const countText='导入文件检查结果：\n• API：'+incoming.length+' 条\n• 网址：'+(incomingBookmarks?.length??'文件未包含')+' 条\n• 角色卡：'+(incomingRoleCards?.length??'文件未包含')+' 张\n• 素材：'+(incomingLibraryItems?.length??'文件未包含')+' 条\n• 小剧场：'+(incomingTheaters?.length??'文件未包含')+' 个\n\n文件结构有效。导入前建议先导出当前数据备份。\n\n点「确定」继续合并；点「取消」可选择全量替换。';
+  const merge=confirm(countText);
+  let replace=false;if(!merge){replace=confirm('确定用备份替换当前所有模块的数据吗？API、书签、角色卡、素材和小剧场都会被替换，无法撤销。');if(!replace)return;}
+  const mergeById=(current,added,keyPrefix,valid)=>{if(!Array.isArray(added))return current;const clean=added.filter(valid).map((x,i)=>({...x,id:String(x.id||(`${keyPrefix}-${Date.now()}-${i}`))}));if(replace)return clean;const m=new Map(current.map(x=>[String(x.id),x]));clean.forEach(x=>m.set(String(x.id),x));return [...m.values()];};
+  if(merge){const dup=(current,added)=>Array.isArray(added)?added.filter(a=>a&&a.id&&current.some(c=>String(c.id)===String(a.id))).length:0;const duplicates=dup(records,incoming)+dup(bookmarks,incomingBookmarks)+dup(roleCards,incomingRoleCards)+dup(libraryItems,incomingLibraryItems)+dup(theaters,incomingTheaters);if(duplicates&&!confirm('发现 '+duplicates+' 条与本机记录 ID 相同的数据。合并时这些同 ID 记录会被备份文件覆盖，其他记录保留。是否继续？'))return;}
+  records=mergeById(records,incoming,'api',r=>r&&typeof r.name==='string'&&typeof r.baseUrl==='string');
+  if(incomingBookmarks!==null)bookmarks=mergeById(bookmarks,incomingBookmarks,'bookmark',b=>{if(!b||typeof b.name!=='string'||typeof b.url!=='string')return false;try{return ['http:','https:'].includes(new URL(b.url).protocol)}catch{return false}}).map(b=>({...b,notes:typeof b.notes==='string'?b.notes:'',category:typeof b.category==='string'?b.category:''}));else if(replace)bookmarks=[];
+  if(incomingTheaters!==null)theaters=mergeById(theaters,incomingTheaters,'theater',t=>t&&typeof t.title==='string'&&typeof t.content==='string').map(t=>({...t,category:typeof t.category==='string'?t.category:'',type:t.type==='html'?'html':'text'}));else if(replace)theaters=[];
+  if(incomingRoleCards!==null)roleCards=mergeById(roleCards,incomingRoleCards,'role',r=>r&&typeof r.title==='string'&&typeof r.raw==='string').map(r=>({...r,category:typeof r.category==='string'?r.category:'',tags:Array.isArray(r.tags)?r.tags.filter(x=>typeof x==='string'):[],notes:typeof r.notes==='string'?r.notes:'',source:typeof r.source==='string'?r.source:'',cover:typeof r.cover==='string'?r.cover:''}));else if(replace)roleCards=[];
+  if(incomingLibraryItems!==null)libraryItems=mergeById(libraryItems,incomingLibraryItems,'material',x=>x&&typeof x.title==='string'&&typeof x.content==='string').map(x=>({...x,type:libraryTypeNames[x.type]?x.type:'note',category:typeof x.category==='string'?x.category:'',tags:Array.isArray(x.tags)?x.tags.filter(t=>typeof t==='string'):[],source:typeof x.source==='string'?x.source:'',notes:typeof x.notes==='string'?x.notes:''}));else if(replace)libraryItems=[];
+  await Promise.all([save(),saveBookmarks(),saveTheaters(),saveRoles(),saveLibrary()]);
+  if(incomingPrefs){if(typeof incomingPrefs.theme==='string'&&incomingPrefs.theme){try{localStorage.setItem('apihub-theme-v1',incomingPrefs.theme)}catch{}}if(typeof incomingPrefs.wallpaper==='string'){await writeAppData('apihub-wallpaper-v1',incomingPrefs.wallpaper);window.__apiHubWallpaper=incomingPrefs.wallpaper;}}
+  applyAppearance();markSaved('导入后已保存');renderAll();refreshBackupStatus();alert('导入完成！API '+records.length+' 条，书签 '+bookmarks.length+' 条，角色卡 '+roleCards.length+' 张，素材/预设 '+libraryItems.length+' 条，小剧场 '+theaters.length+' 个。');
+ }catch(err){alert('导入失败，现有数据未主动清空：'+(err.message||err));}
+};
+$('stPresetFile').onchange=async e=>{
+ const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;const status=$('stPresetStatus');
+ try{
+  if(f.size>15*1024*1024)throw Error('文件超过 15 MB，请确认这是预设 JSON 文件。');
+  const raw=await f.text();let obj;try{obj=JSON.parse(raw)}catch{throw Error('不是有效的 JSON 文件。')}
+  if(!obj||typeof obj!=='object'||Array.isArray(obj))throw Error('酒馆预设应为 JSON 对象格式。');
+  const title=String(obj.name||obj.preset_name||obj.presetName||obj.title||f.name.replace(/\.json$/i,'')).trim()||'酒馆预设';
+  const looksPreset=['temperature','top_p','top_k','max_tokens','prompts','prompt_order','repetition_penalty','frequency_penalty','presence_penalty','min_p','top_a'].some(k=>Object.prototype.hasOwnProperty.call(obj,k));
+  if(!looksPreset) {if(!confirm('文件中未发现常见酒馆预设字段（如 prompts、temperature、top_p）。仍要把它作为预设原文收藏吗？'))return;}
+  const id=(crypto.randomUUID&&crypto.randomUUID())||('preset-'+Date.now()+'-'+Math.random());
+  libraryItems.unshift({id,title, type:'preset',category:'SillyTavern 酒馆预设',tags:['SillyTavern','预设'],source:'',notes:'从文件导入：'+f.name+'。原始 JSON 已完整保存在内容中。',content:JSON.stringify(obj,null,2),created:new Date().toISOString(),updated:new Date().toISOString()});
+  await saveLibrary();renderNav();setLibraryType('preset');status.textContent='导入成功：'+title+'。已保存到「世界书与玩家素材库 → 生成预设 / 参数」。';alert('酒馆预设导入成功！已保存为素材库中的预设，不会覆盖其他数据。');
+ }catch(err){status.textContent='导入失败：'+(err.message||err);alert('预设导入失败：'+(err.message||err));}
+};
+$('wipeBtn').onclick=()=>{if(confirm('确定删除当前浏览器中的全部 API 记录？')&&confirm('此操作无法撤销，建议先导出备份。')){records=[];bookmarks=[];theaters=[];roleCards=[];libraryItems=[];Promise.all([save(),saveBookmarks(),saveTheaters(),saveRoles(),saveLibrary()]).then(()=>{renderAll();go('overview')})}};
+function openGuide(){ $('guideOverlay').classList.remove('hidden'); document.body.style.overflow='hidden'; }
+function closeGuide(){ $('guideOverlay').classList.add('hidden'); document.body.style.overflow=''; if($('dontShowGuideAgain').checked){try{localStorage.setItem('apihub-guide-skip-v1','1')}catch{}} }
+$('openGuideBtn').onclick=openGuide;$('closeGuideBtn').onclick=closeGuide;$('closeGuideX').onclick=closeGuide;
+$('guideOverlay').addEventListener('click',e=>{if(e.target===$('guideOverlay'))closeGuide()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('guideOverlay').classList.contains('hidden'))closeGuide()});
+const ASSIST_CHAT_DB='apihub-assistant-chat-v1';
+let assistantMessages=[];
+function assistantApiRecord(){return records.find(r=>String(r.id)===$('assistantApi').value)}
+function assistantRenderChat(){const box=$('assistantChat');if(!box)return;box.innerHTML=assistantMessages.map(m=>`<div class="assistant-msg ${m.role==='user'?'user':'assistant'}">${esc(m.content)}</div>`).join('');box.scrollTop=box.scrollHeight;try{localStorage.setItem(ASSIST_CHAT_DB,JSON.stringify(assistantMessages.slice(-80)))}catch{}}
+function assistantFillApis(){const sel=$('assistantApi');if(!sel)return;const old=sel.value;sel.innerHTML=records.length?records.map(r=>`<option value="${esc(r.id)}">${esc(r.name)}${r.category?' · '+esc(r.category):''}</option>`).join(''):'<option value="">请先添加 API</option>';if(records.some(r=>String(r.id)===old))sel.value=old;const r=assistantApiRecord();if(r&&r.model&&!$('assistantModel').value)$('assistantModel').value=r.model;}
+async function assistantGetModels(){const r=assistantApiRecord();if(!r)throw Error('请先在「添加 API」中保存一个 API。');const models=await requestModels(r);r.models=models;await save();assistantFillApis();const chosen=models.map(x=>typeof x==='string'?x:x.id||x.name).filter(Boolean);if(chosen.length){const current=$('assistantModel').value;if(!current||!chosen.includes(current))$('assistantModel').value=chosen[0];}say($('assistantStatus'),'模型拉取成功：'+models.length+' 个模型。','ok');return models;}
+$('assistantApi')?.addEventListener('change',()=>{const r=assistantApiRecord();$('assistantModel').value=r?.model||((r?.models||[])[0]||'');});
+$('assistantPullModels')?.addEventListener('click',async()=>{try{say($('assistantStatus'),'正在拉取模型…');await assistantGetModels()}catch(e){say($('assistantStatus'),'拉取失败：'+e.message,'bad')}});
+$('assistantConnect')?.addEventListener('click',async()=>{try{say($('assistantStatus'),'正在测试连接…');const r=assistantApiRecord();if(!r)throw Error('请先添加 API');const ms=await requestModels(r);r.models=ms;await save();assistantFillApis();say($('assistantStatus'),'连接成功。已读取模型列表，共 '+ms.length+' 个模型。','ok')}catch(e){say($('assistantStatus'),'连接失败：'+e.message,'bad')}});
+$('assistantClear')?.addEventListener('click',()=>{if(confirm('清空当前 AI 对话记录？')){assistantMessages=[];$('assistantReason').textContent='发送消息后，这里会显示助手给出的简要处理思路或计划。';assistantRenderChat()}});
+function assistantEndpoint(r){let base=String(r.baseUrl||'').trim().replace(/\/+$/,'');if(/\/chat\/completions$/i.test(base))return base;if(/\/models$/i.test(base))base=base.replace(/\/models$/i,'');return base+'/chat/completions'}
+function assistantSystemPrompt(){return `你是 API Hub 内置的收藏整理助手。帮助用户规划和生成收藏目录、网址条目、酒馆角色扮演素材、提示词、世界书笔记和预设说明。你不能直接操作用户的浏览器或本地数据，只能提出内容供用户确认导入。回答末尾如适合创建内容，请附一个 JSON 代码块，顶层格式必须为 {"items":[...]}。网址条目字段：{"type":"bookmark","name":"名称","url":"https://...","category":"目录名称","notes":"备注"}；素材条目字段：{"type":"material","title":"标题","materialType":"prompt|worldbook|preset|story|code|note|asset","category":"目录名称","content":"完整内容","source":"来源可空","notes":"备注可空"}。若只创建目录，可用一条 type=bookmark 的记录，name 写目录名、url 写空字符串。不要伪造真实网址；不知道网址时留空并说明。请给出简洁的“分析摘要/处理计划”，但不要声称提供完整隐藏思维链。`}
+async function assistantSend(){const text=$('assistantInput').value.trim();if(!text)return;const r=assistantApiRecord();if(!r){say($('assistantStatus'),'请先保存并选择一个 API。','bad');return}const model=$('assistantModel').value.trim()||r.model||((r.models||[])[0]||'');if(!model){say($('assistantStatus'),'请先拉取模型，或手动填写模型 ID。','bad');return}if(!r.apiKey||!r.baseUrl){say($('assistantStatus'),'所选 API 缺少 URL 或密钥，请到 API 管理中编辑。','bad');return}assistantMessages.push({role:'user',content:text});$('assistantInput').value='';assistantRenderChat();$('assistantSend').disabled=true;say($('assistantStatus'),'AI 正在回复…');try{const msgs=[{role:'system',content:assistantSystemPrompt()},...assistantMessages.slice(-24).map(m=>({role:m.role,content:m.content}))];const resp=await fetch(assistantEndpoint(r),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+r.apiKey},body:JSON.stringify({model,messages:msgs,temperature:0.7})});const body=await resp.text();let data;try{data=JSON.parse(body)}catch{throw Error('服务商返回的内容不是 JSON：'+body.slice(0,250))}if(!resp.ok)throw Error('HTTP '+resp.status+'：'+(data.error?.message||data.message||body.slice(0,300)));const answer=data.choices?.[0]?.message?.content;if(!answer)throw Error('返回结果中没有 assistant message，请检查所选模型是否支持聊天补全。');assistantMessages.push({role:'assistant',content:String(answer)});assistantRenderChat();$('assistantReason').textContent='本轮处理摘要：根据你的需求生成答复；如果回复包含 items JSON，可点击“从最近回复导入目录/内容”，检查后再确认写入。这里不是完整思维链。';say($('assistantStatus'),'回复完成。内容仅显示在本地页面；尚未自动写入收藏。','ok')}catch(e){say($('assistantStatus'),'请求失败：'+e.message+'。若提示 CORS，请使用允许浏览器跨域的 API 服务。','bad')}finally{$('assistantSend').disabled=false}}
+$('assistantSend')?.addEventListener('click',assistantSend);
+$('assistantInput')?.addEventListener('input',e=>{e.currentTarget.style.height='34px';e.currentTarget.style.height=Math.min(e.currentTarget.scrollHeight,78)+'px'});
+$('assistantInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();assistantSend()}});
+$('assistantBack')?.addEventListener('click',()=>{const side=$('sidebar');side.classList.toggle('open');$('assistantBack')?.setAttribute('aria-expanded',String(side.classList.contains('open')));});
+$('assistantAddApi')?.addEventListener('click',()=>{resetForm();go('add')});
+$('assistantSettingsToggle')?.addEventListener('click',()=>{const d=$('assistantSettings');d.open=!d.open;if(d.open)d.scrollIntoView({block:'nearest',behavior:'smooth'})});
+$('assistantMoreToggle')?.addEventListener('click',()=>{const d=document.querySelector('.assistant-more');d.open=!d.open});
+
+$('assistantMakeItems')?.addEventListener('click',async()=>{const last=[...assistantMessages].reverse().find(m=>m.role==='assistant');if(!last){alert('还没有 AI 回复。');return}let obj=null;const blocks=[...last.content.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi)].map(m=>m[1]);for(const b of blocks){try{const x=JSON.parse(b);if(Array.isArray(x.items)){obj=x;break}}catch{}}if(!obj){try{const start=last.content.indexOf('{'),end=last.content.lastIndexOf('}');if(start>=0&&end>start){const x=JSON.parse(last.content.slice(start,end+1));if(Array.isArray(x.items))obj=x}}catch{}}if(!obj||!obj.items.length){alert('没有找到可导入的 items JSON。请让 AI 按页面提示输出 JSON 代码块。');return}const valid=obj.items.filter(x=>x&&((x.type==='bookmark'&&typeof x.name==='string')||(x.type==='material'&&typeof x.title==='string'&&typeof x.content==='string')));if(!valid.length){alert('JSON 中没有可识别的网址或素材条目。');return}const preview=valid.map((x,i)=>`${i+1}. ${x.type==='bookmark'?'网址/目录':'素材'}：${x.name||x.title} · ${x.category||'未分类'}`).join('\n');if(!confirm('确认将以下内容保存到本地收藏吗？\n\n'+preview+'\n\n仅导入你确认的条目。'))return;let nb=0,nm=0;for(const x of valid){const id=(crypto.randomUUID&&crypto.randomUUID())||('ai-'+Date.now()+'-'+Math.random());if(x.type==='bookmark'){bookmarks.unshift({id,name:x.name.slice(0,160),url:typeof x.url==='string'?x.url:'',category:typeof x.category==='string'?x.category:'AI 助手生成',notes:typeof x.notes==='string'?x.notes:'由 AI 助手生成',created:new Date().toISOString(),updated:new Date().toISOString()});nb++}else{const types=['worldbook','prompt','preset','story','code','note','asset'];libraryItems.unshift({id,title:x.title.slice(0,160),type:types.includes(x.materialType)?x.materialType:'note',category:typeof x.category==='string'?x.category:'AI 助手生成',tags:['AI助手'],source:typeof x.source==='string'?x.source:'AI 助手生成',notes:typeof x.notes==='string'?x.notes:'',content:x.content,created:new Date().toISOString(),updated:new Date().toISOString()});nm++}}await Promise.all([saveBookmarks(),saveLibrary()]);renderAll();alert(`导入完成：网址/目录 ${nb} 条，素材 ${nm} 条。`)});
+const originalInitLocalData=initLocalData;
+
+document.querySelectorAll('.nav[data-view="assistant"],#view-assistant').forEach(el=>el.remove());
+applyAppearance();initLocalData();if(!localStorage.getItem('apihub-guide-skip-v1'))setTimeout(openGuide,350);
+})();
+
+</script></body></html>
